@@ -1,0 +1,86 @@
+<html>
+    <head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+	<script type="text/javascript" src="/<TMPL_VAR INSTANCE>/js/jquery/jquery-2.2.4.min.js"></script>
+	<script type="text/javascript" src="/<TMPL_VAR INSTANCE>/js/jquery/plugin/jquery.validate.min.js"></script>
+
+	<link rel="stylesheet" href="/<TMPL_VAR INSTANCE>/css/targets/feedback/feedback.css" type="text/css">
+	<link rel="stylesheet" href="/<TMPL_VAR INSTANCE>/css/targets/feedback/feedback_localized.css" type="text/css">
+
+	<title>SFX - Send Comments</title>
+    </head>
+    <body>
+	<form action="<TMPL_VAR NAME="ACTION">" id="feedback_form" method="post" class="form-style-7">
+	    <h1>SFX - Send Comments
+		<span>You can use this form to send comments or questions about SFX to the librarians</span>
+	    </h1>
+	    <ul>
+		<li>
+		    <label for="username">Your Full Name (optional)</label>
+		    <input type="text" name="username" minlength="2">
+		    <span>Enter Your Full Name</span>
+		</li>
+		<li>
+		    <label for="useremail">Email</label>
+		    <input type="email" name="useremail" required>
+		    <span>Enter a valid email address</span>
+		</li>
+		<li>
+		    <label for="affiliation">Affiliation</label>
+		    <select name="affiliation" form_id="feedback_form" required>
+			<option disabled selected value> -- choose an option -- </option>
+			<option>University of Chicago College Student</option>
+			<option>University of Chicago Graduate Student</option>
+			<option>University of Chicago Faculty</option>
+			<option>University of Chicago Staff</option>
+			<option>University of Chicago Alumnus/a</option>
+			<option>Not Affiliated with the University of Chicago</option>
+		    </select>
+		    <span>Enter a valid email address</span>
+		</li>
+		<li>
+		    <label for="usercomment">Your question or comment</label>
+		    <textarea name="usercomment" minlength="20" required></textarea>
+		    <span>Type your question or comment here</span>
+		</li>
+		
+		<!-- Do not edit the next line -->
+
+		<TMPL_LOOP NAME=FIELDS>
+
+		    <!-- <br><TMPL_VAR PARNAME>: <TMPL_VAR ESCAPE=HTML PARVAL>-->
+		    <input type='hidden' name="<TMPL_VAR ESCAPE=HTML PARNAME>" value="<TMPL_VAR ESCAPE=HTML PARVALUE>">
+
+		</TMPL_LOOP>
+		<li>
+		    <input type="submit" class="button" name="send" value="Send Comment">
+		</li>
+	    </ul>
+	</form>
+
+	<div style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: whitesmoke; color: dimgray; text-align: center;">
+	    <p>
+		This form is powered by Springshare and complies with its <a href="https://springshare.com/privacy.html">privacy policy</a>.
+	    </p>
+	</div>
+	    
+	<script>
+	 #('#feedback_form').validate();
+	</script>
+    </body>
+</html>
+
+
+<!-- <label for="affiliation">Affiliation</label>
+     <!-- <input list="affiliation" name="affiliation">
+     <datalist id="affiliation">
+     <option value="University of Chicago College Student"></option>
+     <option value="University of Chicago Graduate Student"></option>
+     <option value="University of Chicago Faculty"></option>
+     <option value="University of Chicago Staff"></option>
+     <option value="University of Chicago Alumnus"></option>
+     <option value="Not Affiliated with the University of Chicago"></option>
+     </datalist>
+     </li> -->

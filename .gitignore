@@ -1,0 +1,16 @@
+*
+!.gitignore
+
+!cgi/
+cgi/*
+!cgi/public/
+cgi/public/*
+!cgi/public/feedback.cgi
+
+!templates/
+templates/*
+!templates/targets/
+templates/targets/*
+!templates/targets/feedback/
+templates/targets/feedback/*
+!templates/targets/feedback/feedback.tmpl
