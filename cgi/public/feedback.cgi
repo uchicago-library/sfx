@@ -53,7 +53,7 @@ if ($p->param('useremail') &&
 {
     my $mail_from = $p->param('username') . "<" . $p->param('useremail') . ">";
     my $record_title = "SFX Record Problem: ";
-    # $record_title .= $p->param('bookt') if $p->param('bookt');
+    $record_title .= $p->param('bookt') if $p->param('bookt');
     $record_title .= $p->param('articlet') if $p->param('articlet');
 
     my $msg = '';
