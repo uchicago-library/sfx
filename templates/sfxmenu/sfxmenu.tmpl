@@ -1408,8 +1408,9 @@
 	     $(document).ready(function() {
 		 var params = parse_query_string($('#sfx_openurl').text().replace(/^[^?]*\?/, ''));
 
-		 /* var url = 'https://sfx.lib.uchicago.edu/sfx_local/cgi/public/feedback.cgi?em=sfx%40lib.uchicago.edu';*/
-		 var url = 'https://sfx.lib.uchicago.edu/sfx_local/cgi/public/feedback.cgi?em=teichman@uchicago.edu';
+		 var url = 'http://sfx.lib.uchicago.edu:3103/sfx_test/cgi/public/feedback.cgi?em=askeresources%40uchicago.libanswers.com';
+		 /* change to this when in production*/
+		 /* var url = 'https://sfx.lib.uchicago.edu/sfx_local/cgi/public/feedback.cgi?em=askeresources%40uchicago.libanswers.com';*/
 
 		 var sid = get_sid(params);
 		 if (sid) {
