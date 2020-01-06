@@ -9,12 +9,18 @@ cgi/public/*
 
 !templates/
 templates/*
+
 !templates/targets/
 !templates/sfxmenu/
 templates/targets/*
+
 templates/sfxmenu/*
 !templates/sfxmenu/sfxmenu.tmpl
+
 !templates/targets/feedback/
 templates/targets/feedback/*
 !templates/targets/feedback/feedback.tmpl
 
+!templates/targets/capture_citation/
+templates/targets/capture_citation/*
+!templates/targets/capture_citation/capture_citation.tmpl

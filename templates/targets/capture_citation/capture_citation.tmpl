@@ -1,0 +1,52 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<TITLE>Capture Citation</TITLE>
+</HEAD>
+<BODY background="/DocDel/back.gif">
+<font face="verdana,helvetica,arial">
+<table>
+    <TR>
+        <TD style="padding: 10px"><a href="http://www.lib.uchicago.edu/" target="_blank" onclick="window.setTimeout('window.close()',1000)"><IMG SRC="/sfx_local/img/sfxmenu/header.gif" WIDTH="550" HEIGHT="48" BORDER="0"
+                ALT="Return to The University of Chicago Library"></a></TD>
+    </TR>
+<tr>
+<td align="left" valign=top style="font-family: Arial,sans-serif; font-size: 18px; background-color: #FFFFFF; color: #000000; font-weight: normal">
+<IMG SRC="/sfx_local/img/sfxmenu/tl_sfx.gif"
+                        WIDTH="15" HEIGHT="15" BORDER="0"><span style="font-style: italic; font-weight: bold">Find It!</span>: Format and Capture This Citation</span>
+</td>
+</tr>
+<tr><td colspan=2>
+<!-- <font size=2>Use this tool if you want to save this citation and URL for embedding in a course reading list or similar application.</font></td></tr>
+-->
+</table>
+<table>
+
+<tr>
+ <td nowrap><font size=2>
+   <form method="get" <TMPL_VAR FORM_PROPERTIES>>
+   <TMPL_VAR FORM_ELEMENTS>
+   Choose a citation style and click 'Go'
+   <select name="style"><TMPL_VAR STYLE></select>
+   <!-- this will be the prefix for the template document, e.g. mla_book -->
+   <input type="submit" value="Go"></br> Cut and paste the formatted citation below into any application.<br>Also included is the URL for the <i>FindIt!</i> menu for this citation.
+   <p><textarea rows='8' cols='60'><TMPL_VAR CITATION></textarea></p>
+   </form>
+   </font>
+ </td>
+</tr>
+<td>
+<!--
+<font size=2><a href="">Push to elearning environment</a></font>
+-->
+</td>
+</tr>
+<tr><td valign="top" nowrap="nowrap"><font size=1>
+ <a href="javascript:window.close();">Close this Window</a>&nbsp;<br />
+</font>&nbsp;
+</td>
+</tr>
+
+</table>
+</BODY>
+</HTML>
