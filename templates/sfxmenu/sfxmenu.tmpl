@@ -27,6 +27,10 @@
 	<!-- Bootstrap core CSS -->
 	<link href="https://sfx.lib.uchicago.edu/sfx_local/css/public/bootstrap.min.css" rel="stylesheet">
 
+	<!-- Bootstrap core Javascript -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<link href="https://sfx.lib.uchicago.edu/sfx_local/css/public/ie10-viewport-bug-workaround.css" rel="stylesheet">
 	<script src="dist/js/ie10-viewport-bug-workaround.js"></script>
@@ -1472,6 +1476,7 @@
     <body>
 	<nav class="navbar navbar-default navbar-fixed-top">
 	    <div class="container-fluid fluid-top">
+
 		<div class="container navbar-header">
 		    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 			<span class="sr-only">Toggle navigation</span>
@@ -1479,15 +1484,25 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		    </button>
-
-		    <a class="navbar-brand" href="https://www.lib.uchicago.edu" data-ga-category="nav-bar" data-ga-action="click" data-ga-label="The University of Chicago Library Find It!"><img src="//sfx.lib.uchicago.edu/sfx_local/img/sfx/ucl_FindIt_logo.png" class="img-responsive" alt="library logo"></a>
-
+		    
+		    <a class="navbar-brand" href="https://www.lib.uchicago.edu" data-ga-category="nav-bar" data-ga-action="click" data-ga-label="The University of Chicago Library Find It!">
+			<img src="//sfx.lib.uchicago.edu/sfx_local/img/sfx/ucl_FindIt_logo.png" class="img-responsive" alt="library logo">
+		    </a>
 		</div>
+
 		<div id="navbar" class="collapse navbar-collapse">
 		    <div class="container">
 			<ul class="nav navbar-nav">
-			    <li><a href="#" id="reportaproblem" data-ga-category="nav-bar" data-ga-action="click" data-ga-label="Report a Problem">Report a Problem</a></li>
-			    <li><a href="https://www.lib.uchicago.edu/research/help/ask-librarian/" data-ga-category="nav-bar" data-ga-action="click" data-ga-label="Ask a Librarian">Ask a Librarian</a></li>
+			    <li>
+				<a href="#" id="reportaproblem" data-ga-category="nav-bar" data-ga-action="click" data-ga-label="Report a Problem">
+				    Report a Problem
+				</a>
+			    </li>
+			    <li>
+				<a href="https://www.lib.uchicago.edu/research/help/ask-librarian/" data-ga-category="nav-bar" data-ga-action="click" data-ga-label="Ask a Librarian">
+				    Ask a Librarian
+				</a>
+			    </li>
 			</ul>
 		    </div>
 		</div><!--/.nav-collapse -->
@@ -1496,12 +1511,9 @@
 	<div class="container findit-wrap">
 	    <div class="citation" id="titlesection" data-openurl="<TMPL_VAR NAME='OPENURL'>"></div>
 
-	    <!-- Online (Matt) -->
+	    <!-- Online -->
 	    <div class="holdings-locpanel" id="holdingssectionNew" data-openurl="<TMPL_VAR NAME='OPENURL'>"></div>
 	    
-	    <!-- <\!-- Online -\-> -->
-	    <!-- <div class="holdings-locpanel" id="holdingssection" data-openurl="<TMPL_VAR NAME='OPENURL'>"></div> -->
-
 	    <!-- In the Library -->
 	    <div class="holdings-locpanel" id="gotitsection" data-openurl="<TMPL_VAR NAME='OPENURL'>"></div>
 
