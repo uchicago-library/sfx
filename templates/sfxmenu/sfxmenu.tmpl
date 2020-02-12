@@ -1045,6 +1045,7 @@
 				     }
 				     self.find('.all-available-elinks').append('<li><a href="' + data['complete'][i]['url'] + '" class="holdingslink elink external" data-ga-category="online" data-ga-action="click" data-ga-label="' + data['complete'][i]['name'] + '">' + data['complete'][i]['name'] + '</a><br/>' + coverageString + '</li>');
 				 }
+
 			 } else {
 			     // display 'Available' div with icon for Open Access holdings
 			     var isAvailable = function () {
@@ -1057,7 +1058,7 @@
 			     var notAvailable = function () {
 				 self.find('.e-links')
 				     .append(
-					 '<div class="alert alert-no-match" role="alert">Not available.</div>'
+					 '<div class="alert alert-no-match" role="alert">Not available. ' + openurl + '</div>'
 				     );
 			     };
 			     // display entry for a single open access source
@@ -1070,18 +1071,12 @@
 				 cache: true,
 				 dataType: 'json',
 				 url:
-		('https://www.lib.uchicago.edu/cgi-bin/openaccess?code=6685&function=openaccess&openurl=' + openurl + '&callback=?'),
+		('https://www.lib.uchicago.edu/cgi-bin/openaccess2?code=6685&function=openaccess&openurl=' + openurl + '&callback=?'),
 				 success: function(data) {
 				     isAvailable();
-				     var displayHoldings = function (lst) {
-					 for (var i = 0; i < lst.length; i++) {
-					     var holding = lst[i];
-					     self.find('.e-links').append(openAccessHTML(holding['url'],
-											 holding['display'],
-											 holding['displaylink']));
-					 }
-				     };
-				     displayHoldings(data)
+				     self.find('.e-links').append(openAccessHTML(data['url'],
+										 data['display'],
+										 data['displaylink']));
 				 },
 				 error: function (data) {
 				     notAvailable();
