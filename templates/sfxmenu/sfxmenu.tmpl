@@ -1071,7 +1071,7 @@
 				 cache: true,
 				 dataType: 'json',
 				 url:
-		('https://www.lib.uchicago.edu/cgi-bin/openaccess2?code=6685&function=openaccess&openurl=' + openurl + '&callback=?'),
+		('https://www.lib.uchicago.edu/cgi-bin/openaccess?code=6685&function=openaccess&openurl=' + openurl + '&callback=?'),
 				 success: function(data) {
 				     isAvailable();
 				     self.find('.e-links').append(openAccessHTML(data['url'],
