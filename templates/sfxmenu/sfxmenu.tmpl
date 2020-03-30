@@ -1399,8 +1399,11 @@
 		     }
 		 }
 
+		 var extra_params = "&Action=10&Form=22"
+		 
 		 var base_url = 'https://requests.lib.uchicago.edu/illiad/illiad.dll/openurl?';
-		 var url = base_url + '&' + param_arr.join('&');
+		 // var base_url = 'https://requests.lib.uchicago.edu/illiad/illiad.dll?Action=10&Form=22&&';
+		 var url = base_url + param_arr.join('&');
 		 self.attr('href', url);
 	     }
 
@@ -1516,8 +1519,9 @@
 	    <div class="holdings-locpanel">
 		<div class="locpanel-heading getit"><h2>Other Libraries</h2></div>
 		<div id="e-links" class="holdings-unit">
-		  <a href="https://www.lib.uchicago.edu/alerts/changes-library-services-light-coronavirus-updates/" class="text-getit service" data-ga-category="other-libraries"><i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i>Coronavirus News Updates</a>
-		    <small>Nationwide interlibrary loan services are suspended due to coronavirus. More info...</small>
+		  <a id="otherlibrarieslink" href="#" class="text-getit service" data-openurl="<TMPL_VAR NAME='OPENURL'>" data-ga-category="other-libraries" data-ga-action="click" data-ga-label="Request via Interlibrary Loan"><i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i> Request via Interlibrary Loan</a>
+		  
+		    <small>Interlibrary Loan now includes the UBorrow and BorrowDirect delivery services</small>
 		</div>
 	    </div>
 	</div>
