@@ -1352,24 +1352,26 @@
 
 		 var genre = get_genre(params);
 		 var jtitle = get_journal_title(params);
-		 if (genre == 'bookitem') {
+		 var issn = get_issn(params);
+		 // TODO: remove genre == 'book' part post COVID-19
+		 if (genre == 'bookitem' || genre == 'book') {
 		     jtitle = get_title(params);
+		     issn = get_isbn(params);
 		 }
-		 if (genre == 'bookitem' || genre == 'journal') {
+		 // TODO: remove genre == 'book' part post COVID-19
+		 if (genre == 'bookitem' || genre == 'journal' || genre == 'book') {
 		     genre = 'article';
 		 }
 
 		 var requests_params = {
-		     // TODO: change this back post COVID-19 situation
-		     // 'genre':             genre,		     
-		     'genre':             'article',
+		     'genre':             genre,		     
 		     'rft.jtitle':        jtitle,
 		     'rft.volume':        get_volume(params),
 		     'rft.issue':         get_issue(params),
 		     'PhotoJournalMonth': get_month(params),
 		     'PhotoJournalYear':  get_year(params),
 		     'rft.date':          get_year(params),
-		     'rft.issn':          get_issn(params),
+		     'rft.issn':          issn,
 		     'rft.title':         get_title(params),
 		     'rft.atitle':        get_article_title(params)
 		 };
