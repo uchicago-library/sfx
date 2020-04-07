@@ -1353,6 +1353,7 @@
 		 var genre = get_genre(params);
 		 var jtitle = get_journal_title(params);
 		 var issn = get_issn(params);
+		 var sid = get_sid(params);
 		 // TODO: remove genre == 'book' part post COVID-19
 		 if (genre == 'bookitem' || genre == 'book') {
 		     jtitle = get_title(params);
@@ -1373,9 +1374,12 @@
 		     'rft.date':          get_year(params),
 		     'rft.issn':          issn,
 		     'rft.title':         get_title(params),
-		     'rft.atitle':        get_article_title(params)
+		     'rft.atitle':        get_article_title(params),
+		     'sid':               sid
 		 };
 
+
+		 
 		 var aufirst = get_aufirst(params);
 		 if (aufirst) {
 		     requests_params['aufirst'] = aufirst;
