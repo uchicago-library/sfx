@@ -239,6 +239,19 @@
 		 return '';
 	     }
 
+
+	     // Alternate field for author's name called 'au'; exists
+	     // mostly for articles, rather than books
+	     
+	     function get_au(params) {
+		 var au = $('#sfx_au').text();
+		 if (au) {
+		     return au;
+		 } else {
+		     return params['au'];
+		 }
+	     }	     
+
 	     /* Get an author's name, in "last name, first name" format. 
 	      * input:  params (the output of parse_query_string)
 	      * output: author name (a string)
@@ -1364,6 +1377,8 @@
 		     genre = 'article';
 		 }
 
+		 var the_author = $('#sfx_au').text();
+		 
 		 var requests_params = {
 		     'genre':             genre,		     
 		     'rft.jtitle':        jtitle,
@@ -1379,15 +1394,19 @@
 		 };
 
 
-		 
+		 var au_field = get_au(params);
 		 var aufirst = get_aufirst(params);
 		 if (aufirst) {
 		     requests_params['aufirst'] = aufirst;
-		 }
+		 } else if (au_field) {
+		     requests_params['aufirst'] = au_field.split(', ')[1];
+		 } 
 
 		 var aulast = get_aulast(params);
 		 if (aulast) {
 		     requests_params['aulast'] = aulast;
+		 } else if (au_field && au_field.split(', ')[0]) {
+		     requests_params['aulast'] = au_field.split(', ')[0];
 		 }
 
 		 var spage = get_spage(params);
