@@ -809,8 +809,8 @@
 	     }
 
 	     function get_doi(params) {
-		 if ('rft.id' in params && params['rft.id'].substring(0, 5) == 'info:') {
-		     return params['rft.id'].substring(5);
+		 if ('rft_id' in params && params['rft_id'].substring(0, 5) == 'info:') {
+		     return params['rft_id'].substring(5);
 		 }
 	     }
 
@@ -994,6 +994,7 @@
 		 var unescaped_openurl = document.URL;
 		 // URL escaped in a manner suitable for the RESTful service
 		 var openurl = encodeURIComponent(unescaped_openurl);
+
 		 $.ajax({
 		     cache: true,
 		     dataType: 'json',
@@ -1068,7 +1069,7 @@
 				     );
 			     };
 			     // display 'Not Available' div with icon
-			     var notAvailable = function () {
+			     var notAvailable = function () {			 
 				 self.find('.e-links')
 				     .append(
 					 '<div class="alert alert-no-match" role="alert">Not available.</div>'
@@ -1092,7 +1093,27 @@
 										 data['displaylink']));
 				 },
 				 error: function (data) {
-				     notAvailable();
+
+				     var holdings_doi_unescaped = get_doi(params).substring(4);
+				     var holdings_doi = encodeURIComponent("10.1093/ntr/nty046");
+				     /* var idresolve_url = "https://www.lib.uchicago.edu/cgi-bin/idresolve?code=9344&function=idresolve&callback=redundant&id=" + holdings_doi;*/
+				     var idresolve_url = "http://sequent.lib.uchicago.edu:8081?code=9344&function=idresolve&callback=redundant&id=" + holdings_doi;
+				     $.ajax({
+					 headers: { "Accept": "text/plain"},
+					 type: 'GET',
+					 url: idresolve_url,
+					 crossDomain: true,
+					 beforeSend: function(xhr){
+					     xhr.withCredentials = true;
+					 },
+					 success: function(data, textStatus, request){
+					     window.location.replace(data);
+					 },
+					 error: function (data) {
+					     notAvailable();					     
+					 }
+				     });
+
 				 }
 			     });
 			 }
@@ -1434,9 +1455,9 @@
 	     $(document).ready(function() {
 		 var params = parse_query_string($('#sfx_openurl').text().replace(/^[^?]*\?/, ''));
 
-		 var url = 'https://sfx.lib.uchicago.edu/sfx_test/cgi/public/feedback.cgi?em=askeresources%40uchicago.libanswers.com';
+		 /* var url = 'https://sfx.lib.uchicago.edu/sfx_test/cgi/public/feedback.cgi?em=askeresources%40uchicago.libanswers.com';*/
 		 /* change to this when in production*/
-		 /* var url = 'https://sfx.lib.uchicago.edu/sfx_local/cgi/public/feedback.cgi?em=askeresources%40uchicago.libanswers.com';*/
+		 var url = 'https://sfx.lib.uchicago.edu/sfx_local/cgi/public/feedback.cgi?em=askeresources%40uchicago.libanswers.com';
 
 		 var sid = get_sid(params);
 		 if (sid) {
@@ -1544,7 +1565,7 @@
 		<div class="locpanel-heading getit"><h2>Other Libraries</h2></div>
 		<div id="e-links" class="holdings-unit">
 		    <a id="otherlibrarieslink" href="#" class="text-getit service" data-openurl="<TMPL_VAR NAME='OPENURL'>" data-ga-category="other-libraries" data-ga-action="click" data-ga-label="Request via Interlibrary Loan"><i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i> Request a PDF of an article or chapter via Interlibrary Loan </a>
-		  
+		    
 		    <small>(Full books currently unavailable due to COVID-19.)</small>
 		</div>
 	    </div>
