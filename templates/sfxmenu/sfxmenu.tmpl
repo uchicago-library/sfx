@@ -89,22 +89,22 @@
 		 for (var i = 0; i < vars.length; i++) {
 		     // Wrap this in a try/except in case the URL passed to SFX can't be
 		     // decoded with decodeURIComponent. 
-			 try {
-			     var pair = vars[i].split("=");
-			     // If first entry with this name
-			     if (typeof query_string[pair[0]] === "undefined") {
-				 query_string[pair[0]] = decodeURIComponent(pair[1]);
-				 // If second entry with this name
-			     } else if (typeof query_string[pair[0]] === "string") {
-				 var arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
-				 query_string[pair[0]] = arr;
-				 // If third or later entry with this name
-			     } else {
-				 query_string[pair[0]].push(decodeURIComponent(pair[1]));
-			     }
-			 } catch (err) {
-			     continue;
+		     try {
+			 var pair = vars[i].split("=");
+			 // If first entry with this name
+			 if (typeof query_string[pair[0]] === "undefined") {
+			     query_string[pair[0]] = decodeURIComponent(pair[1]);
+			     // If second entry with this name
+			 } else if (typeof query_string[pair[0]] === "string") {
+			     var arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
+			     query_string[pair[0]] = arr;
+			     // If third or later entry with this name
+			 } else {
+			     query_string[pair[0]].push(decodeURIComponent(pair[1]));
 			 }
+		     } catch (err) {
+			 continue;
+		     }
 		 }
 		 return query_string;
 	     }
@@ -810,9 +810,19 @@
 
 	     function get_doi(params) {
 		 if ('rft_id' in params && params['rft_id'].substring(0, 5) == 'info:') {
+		     return params['rft_id'].substring(5);
+		 } else {
+		     return '';
+		 }
+	     }
+
+	     function get_doi_for_idresolve(params) {
+		 if ('rft_id' in params && params['rft_id'].substring(0, 5) == 'info:') {
 		     return params['rft_id'].substring(9);
 		 } else if ('ID' in params && params['ID'].substring(0, 4) == 'doi:') {
 		     return params['ID'].substring(4);
+		 } else {
+		     return '';
 		 }
 	     }
 
@@ -855,7 +865,7 @@
 
 		 var genre = get_genre(params);
 		 var output = [];
-
+		 	 
 		 /* depending on the genre of the item in question, we display the title
 		  * section of the page differently. Items like journal articles have
 		  * citation information that doesn't appear for books. 
@@ -917,10 +927,10 @@
 			 output.push(citation);
 		     }
 
-		     var doi = get_doi(params);
-		     if (doi) {
-			 output.push(doi);
-		     }
+		     // var doi = get_doi_for_idresolve(params);
+		     // if (doi) {
+		     // 	 output.push(doi);
+		     // }
 		 }
 
 		 if (get_citation(params) == '') {
@@ -1007,7 +1017,7 @@
 			 // URL escaped in a manner suitable for the RESTful service
 			 var openurl = encodeURIComponent(unescaped_openurl);
 			 // "Online" header.
-			     self.append(titleA);
+			 self.append(titleA);
 
 			 /* For articles, be sure SFX can point us directly to an article before
 			  * displaying it in this section. For all other item types, be sure the
@@ -1030,7 +1040,7 @@
 			 if (available) {
 			     self.find('.e-links').append('<div class="alert alert-success-match" role="alert">Available</div></div>');
 			     // deduped links.
-				 var title = data['title'];
+			     var title = data['title'];
 			     for (var i = 0; i < data['deduped'].length; i++) {
 				 var coverageString = get_coverage_string(data['deduped'][i]['coverage']);
 				 if (data['deduped'][i]['note']) {
@@ -1050,17 +1060,17 @@
 			     self.find('.e-links').append('<div class="row e-list-wrapper"><ul aria-label="Accordion Control for e-resources"><li><input type="checkbox" id="e-list" aria-expanded="false" data-ga-category="online" data-ga-action="pulldown" data-ga-label="View all available e-resources for this title"/><label for="e-list"> View all available e-resources for this title</label><ul class="all-available-elinks"></ul></li></ul></div>');
 			     
 			     // complete links.
-				 for (var i = 0; i < data['complete'].length; i++) {
-				     var coverageString = get_coverage_string(data['complete'][i]['coverage']);
-				     if (data['complete'][i]['note']) {
-					 coverageString = coverageString + '<br/>Note: ' + data['complete'][i]['note'];
-				     }
-				     if (data['complete'][i]['embargo']) {
-					 var months_dc = data['complete'][i]['embargo'];
-					 coverageString = coverageString + '<br>' + toDayMonth(months_dc);
-				     }
-				     self.find('.all-available-elinks').append('<li><a href="' + data['complete'][i]['url'] + '" class="holdingslink elink external" data-ga-category="online" data-ga-action="click" data-ga-label="' + data['complete'][i]['name'] + '">' + data['complete'][i]['name'] + '</a><br/>' + coverageString + '</li>');
+			     for (var i = 0; i < data['complete'].length; i++) {
+				 var coverageString = get_coverage_string(data['complete'][i]['coverage']);
+				 if (data['complete'][i]['note']) {
+				     coverageString = coverageString + '<br/>Note: ' + data['complete'][i]['note'];
 				 }
+				 if (data['complete'][i]['embargo']) {
+				     var months_dc = data['complete'][i]['embargo'];
+				     coverageString = coverageString + '<br>' + toDayMonth(months_dc);
+				 }
+				 self.find('.all-available-elinks').append('<li><a href="' + data['complete'][i]['url'] + '" class="holdingslink elink external" data-ga-category="online" data-ga-action="click" data-ga-label="' + data['complete'][i]['name'] + '">' + data['complete'][i]['name'] + '</a><br/>' + coverageString + '</li>');
+			     }
 
 			 } else {
 			     // display 'Available' div with icon for Open Access holdings
@@ -1116,24 +1126,25 @@
 			     }
 			     
 			     var idresolveExpansion = function (nextAjaxCall) {
-				 var holdings_doi_unescaped = get_doi(params);
-				 var holdings_doi = encodeURIComponent(holdings_doi_unescaped);
-				 var idresolve_url = "https://www.lib.uchicago.edu/cgi-bin/idresolve?code=9344&function=idresolve&callback=redundant&id=" + holdings_doi;
-				 /* var idresolve_url = "http://sequent.lib.uchicago.edu:8081?code=9344&function=idresolve&callback=redundant&id=" + holdings_doi;*/
+				 var holdings_doi_unescaped = get_doi_for_idresolve(params);
+				 if (holdings_doi_unescaped) {
+				     var holdings_doi = encodeURIComponent(holdings_doi_unescaped);
+				     var idresolve_url = "https://www.lib.uchicago.edu/cgi-bin/idresolve?code=9344&function=idresolve&callback=redundant&id=" + holdings_doi;
+				     /* var idresolve_url = "http://sequent.lib.uchicago.edu:8081?code=9344&function=idresolve&callback=redundant&id=" + holdings_doi;*/
 
-				 var issn = get_issn(params);
-				 var isbn = get_issn(params);
-				 var no_issn = !issn;
-				 var no_isbn = !isbn;
-				 var exists_doi = typeof(holdings_doi_unescaped) !== undefined;
-				 var only_doi = no_issn && no_isbn && exists_doi;
+				     var issn = get_issn(params);
+				     var isbn = get_issn(params);
+				     var no_issn = !issn;
+				     var no_isbn = !isbn;
+				     var exists_doi = typeof(holdings_doi_unescaped) !== undefined;
+				     var only_doi = no_issn && no_isbn && exists_doi;
 
-				 if (only_doi) {
-				     idresolveQuery(idresolve_url, nextAjaxCall);
-				 } else {
-				     nextAjaxCall();
+				     if (only_doi) {
+					 idresolveQuery(idresolve_url, nextAjaxCall);
+				     } else {
+					 nextAjaxCall();
+				     }
 				 }
-
 			     };
 
 			     var openAccessQuery = function () {
@@ -1215,7 +1226,7 @@
 		     var human_readable_title_type = 'title';
 		 } else {
 		     // if the genre is book, do an advanced search for the title and author.
-			 var catalog_search_url = 'https://catalog.lib.uchicago.edu/vufind/Search/Results?bool0%5B%5D=AND&lookfor0%5B%5D=' + encodeURIComponent(title) + '&type0%5B%5D=Title&lookfor0%5B%5D=' + encodeURIComponent(aulast) + '&type0%5B%5D=Author';
+		     var catalog_search_url = 'https://catalog.lib.uchicago.edu/vufind/Search/Results?bool0%5B%5D=AND&lookfor0%5B%5D=' + encodeURIComponent(title) + '&type0%5B%5D=Title&lookfor0%5B%5D=' + encodeURIComponent(aulast) + '&type0%5B%5D=Author';
 		     var human_readable_title_type = 'title';
 		 }
 
@@ -1238,7 +1249,7 @@
 		     url: url,
 		     success: function(data) {
 			 // save data for later. 
-			     $('#gotitsection').data('data', data);
+			 $('#gotitsection').data('data', data);
 
 			 // header
 			 self.append('<div class="locpanel-heading"><h2>In the Library</h2></div>');
@@ -1254,20 +1265,20 @@
 				 match = true;
 			     }
 			     // if there is something in the locs array, this item has print holdings.
-				 // this will even work for journals, where the availability message is taking 
+			     // this will even work for journals, where the availability message is taking 
 			     // the specific article into consideration for the print array.
-				 if (data['result'][i]['locs'].length > 0) { 
-				     match = true;
-				 }
+			     if (data['result'][i]['locs'].length > 0) { 
+				 match = true;
+			     }
 			 }
 			 if (match) {
 			     self.append('<div class="e-links holdings-unit">');
 			     // there is a match for this...
-				 if (issn) {
-				     self.find('.e-links').append('<div class="alert alert-unknown" role="alert">Some volumes found in the Library Catalog</div>');
-				 } else {
-				     self.find('.e-links').append('<div class="alert alert-success-match" role="alert">There is a match for this <strong>' + encodeURIComponent(standard_number_type) + '</strong> in the Library Catalog</div>');
-				 }
+			     if (issn) {
+				 self.find('.e-links').append('<div class="alert alert-unknown" role="alert">Some volumes found in the Library Catalog</div>');
+			     } else {
+				 self.find('.e-links').append('<div class="alert alert-success-match" role="alert">There is a match for this <strong>' + encodeURIComponent(standard_number_type) + '</strong> in the Library Catalog</div>');
+			     }
 			     for (var i = 0; i < data['result'].length; i++) {
 				 if (data['result'][i]['locs'].length == 0) {
 				     continue;
@@ -1313,7 +1324,7 @@
 				 }
 				 
 				 // scan and deliver...
-				     var sndable = false;
+				 var sndable = false;
 				 if (data['result'][i]['status'] == 'multivol' || (data['result'][i]['status'] == 'nomatch' && data['result'][i]['callnos'].length > 0)) {
 				     sndable = true;
 				 } else {
@@ -1355,62 +1366,62 @@
 				 self.find('.e-links').append('<div class="row in-library"><div class="result-title"><a href="https://catalog.lib.uchicago.edu/vufind/Record/' + encodeURIComponent(data['result'][i]['bibid']) + '" data-ga-category="in-the-library" data-ga-action="click" data-ga-label="' + label + '">' + gotit_title + ' ' + call_numbers + ' <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></div>' + availability_html + '<span class="location">' + locations + '</span>' + scan_and_deliver_link + '</div>');
 			     }
 			     // or search the library catalog...
-				 self.find('.e-links').append('<div class="row"><span class="view-all">OR <a href="' + catalog_search_url + '" data-ga-category="in-the-library" data-ga-action="click" data-ga-label="Search the Library Catalog for works with this ' + human_readable_title_type + '">Search the Library Catalog for works with this <strong>' + human_readable_title_type + '</strong></a></span></div>');
+			     self.find('.e-links').append('<div class="row"><span class="view-all">OR <a href="' + catalog_search_url + '" data-ga-category="in-the-library" data-ga-action="click" data-ga-label="Search the Library Catalog for works with this ' + human_readable_title_type + '">Search the Library Catalog for works with this <strong>' + human_readable_title_type + '</strong></a></span></div>');
 			 } else {
 			     self.append('<div class="e-links holdings-unit"><div class="alert alert-no-match" role="alert"><strong>' + standard_number_type + '</strong> not located in the UChicago Library collection.<div class="resubmit-search"><a href="' + catalog_search_url + '" data-ga-category="in-the-library" data-ga-action="click" data-ga-label="Search the Library catalog by title">Search the Library catalog <strong>by title</strong></a> </div></div></div>');
 			 }
 
 			 // Then, go back back into the "Online" section and add e-holdings, if appropriate. 
-			     if (genre == 'book' || genre == 'bookitem') {
-				 $(document).ajaxStop(function() {
-				     var data = $('#gotitsection').data('data');
+			 if (genre == 'book' || genre == 'bookitem') {
+			     $(document).ajaxStop(function() {
+				 var data = $('#gotitsection').data('data');
 
-				     var has_eholdings = false;
+				 var has_eholdings = false;
+				 for (var i = 0; i < data['result'].length; i++) {
+				     if (data['result'][i]['eholdingspresent']) {
+					 has_eholdings = true;
+				     }
+				 }
+
+				 if (has_eholdings) {
+				     var elinks = $('#holdingssectionNew').find('.e-links');
+				     elinks.empty();
+				     elinks.append('<div class="alert alert-success-match" role="alert">Available</div>');
+				     
 				     for (var i = 0; i < data['result'].length; i++) {
-					 if (data['result'][i]['eholdingspresent']) {
-					     has_eholdings = true;
+					 for (var j = 0; j < data['result'][i]['eholding'].length; j++) {
+					     var href = data['result'][i]['eholding'][j]['url'];
+					     if (data['result'][i]['eholding'][j]['text'].join('') == '') {
+						 var text = href;
+					     } else {
+						 var text = data['result'][i]['eholding'][j]['text'].join('');
+					     }
+					     // proxy server links are http as of September 2018
+					     elinks.append('<div><a href="http://proxy.uchicago.edu/login?url=' + href + '" data-ga-category="online" data-ga-action="click" data-ga-label="' + text + '">' + text + '</a></div>');
 					 }
 				     }
-
-				     if (has_eholdings) {
-					 var elinks = $('#holdingssectionNew').find('.e-links');
-					 elinks.empty();
-					 elinks.append('<div class="alert alert-success-match" role="alert">Available</div>');
-					 
-					 for (var i = 0; i < data['result'].length; i++) {
-					     for (var j = 0; j < data['result'][i]['eholding'].length; j++) {
-						 var href = data['result'][i]['eholding'][j]['url'];
-						 if (data['result'][i]['eholding'][j]['text'].join('') == '') {
-						     var text = href;
-						 } else {
-						     var text = data['result'][i]['eholding'][j]['text'].join('');
-						 }
-						 // proxy server links are http as of September 2018
-						 elinks.append('<div><a href="http://proxy.uchicago.edu/login?url=' + href + '" data-ga-category="online" data-ga-action="click" data-ga-label="' + text + '">' + text + '</a></div>');
-					     }
-					 }
-				     } else {
-					 $('#sfxforms').find('.section').each(function() {
-					     if ($(this).find('h2').text() == 'Find It Online') {
-						 var elinks = $('#holdingssection').find('.e-links');
-						 elinks.empty();
-						 elinks.append('<div class="alert alert-success-match" role="alert">Available</div>');
-						 $(this).find('tr').each(function() {
-						     var form = $(this).find('form');
-						     var text = $(this).find('a').text();
-						     var a = $('<a href="#" data-ga-category="online" data-ga-action="click" data-ga-label="' + text + '">' + text + '</a>');
-						     var div = $('<div></div>');
-						     elinks.append(div);
-						     div.append(a);
-						     a.click(function() {
-							 form.submit();
-						     });
+				 } else {
+				     $('#sfxforms').find('.section').each(function() {
+					 if ($(this).find('h2').text() == 'Find It Online') {
+					     var elinks = $('#holdingssection').find('.e-links');
+					     elinks.empty();
+					     elinks.append('<div class="alert alert-success-match" role="alert">Available</div>');
+					     $(this).find('tr').each(function() {
+						 var form = $(this).find('form');
+						 var text = $(this).find('a').text();
+						 var a = $('<a href="#" data-ga-category="online" data-ga-action="click" data-ga-label="' + text + '">' + text + '</a>');
+						 var div = $('<div></div>');
+						 elinks.append(div);
+						 div.append(a);
+						 a.click(function() {
+						     form.submit();
 						 });
-					     }
-					 });
-				     }
-				 });
-			     }
+					     });
+					 }
+				     });
+				 }
+			     });
+			 }
 		     }
 		 });  
 	     }
@@ -1426,6 +1437,7 @@
 		 var jtitle = get_journal_title(params);
 		 var issn = get_issn(params);
 		 var sid = get_sid(params);
+
 		 // TODO: remove genre == 'book' part post COVID-19
 		 if (genre == 'bookitem' || genre == 'book') {
 		     jtitle = get_title(params);
@@ -1435,7 +1447,7 @@
 		 if (genre == 'bookitem' || genre == 'journal' || genre == 'book') {
 		     genre = 'article';
 		 }
-
+		 
 		 var the_author = $('#sfx_au').text();
 		 
 		 var requests_params = {
