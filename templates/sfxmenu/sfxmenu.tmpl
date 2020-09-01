@@ -950,10 +950,10 @@
 		     output.push('ISSN: ' + issn);
 		 }
 
-		 var oclcnum = get_oclcnum(params);
-		 if (oclcnum) {
-		     output.push('OCLC # ' + oclcnum);
-		 }
+		 // var oclcnum = get_oclcnum(params);
+		 // if (oclcnum) {
+		 //     output.push('OCLC # ' + oclcnum);
+		 // }
 
 		 if (output) {
 		     self.append('<p>' + output.join(' ') + '</p>');
@@ -1197,7 +1197,7 @@
 		 var journaltitle = get_journal_title(params);
 		 var isbn         = get_isbn(params);
 		 var issn         = get_issn(params);
-		 var oclc         = get_oclcnum(params);
+		 // var oclc         = get_oclcnum(params);
 		 var year         = get_year(params);
 
 		 var standard_number_type = '';
