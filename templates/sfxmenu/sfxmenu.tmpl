@@ -809,22 +809,25 @@
 	     }
 
 	     function get_doi(params) {
-		 if ('rft_id' in params && params['rft_id'].substring(0, 5) == 'info:') {
+		 if ('rft_id' in params
+		     && typeof(params['rft_id']) === 'string'
+		     && params['rft_id'].substring(0, 5) == 'info:') {
 		     return params['rft_id'].substring(5);
-		 } else {
-		     return '';
-		 }
+		 } 
 	     }
 
 	     function get_doi_for_idresolve(params) {
-		 if ('rft_id' in params && params['rft_id'].substring(0, 5) == 'info:') {
-		     return params['rft_id'].substring(9);
-		 } else if ('ID' in params && params['ID'].substring(0, 4) == 'doi:') {
-		     return params['ID'].substring(4);
-		 } else {
-		     return '';
-		 }
+	     	 if ('rft_id' in params
+	     	     && typeof(params['rft_id']) === 'string'
+	     	     && params['rft_id'].substring(0, 5) == 'info:') {
+	     	     return params['rft_id'].substring(9);
+	     	 } else if ('ID' in params
+			    && typeof(params['ID'] === 'string')
+			    && params['ID'].substring(0, 4) == 'doi:') {
+	     	     return params['ID'].substring(4);
+	     	 } 
 	     }
+
 
 	     // MT : toDayMonth 
 
@@ -1111,7 +1114,7 @@
 					 var return_issn = return_params['issn'];
 					 var return_isbn = return_params['isbn'];
 					 var no_standard_number = !return_issn && !return_isbn;
-					 
+
 					 if (no_standard_number) {
 					     nextAjaxCall();
 					 } else {
@@ -1126,11 +1129,12 @@
 			     }
 			     
 			     var idresolveExpansion = function (nextAjaxCall) {
-				 var holdings_doi_unescaped = get_doi_for_idresolve(params);
-				 if (holdings_doi_unescaped) {
+				 var holdings_doi_unescaped = get_doi_for_idresolve(params);			 
+				 if (!holdings_doi_unescaped) {
+				     nextAjaxCall();
+				 } else {
 				     var holdings_doi = encodeURIComponent(holdings_doi_unescaped);
 				     var idresolve_url = "https://www.lib.uchicago.edu/cgi-bin/idresolve?code=9344&function=idresolve&callback=redundant&id=" + holdings_doi;
-				     /* var idresolve_url = "http://sequent.lib.uchicago.edu:8081?code=9344&function=idresolve&callback=redundant&id=" + holdings_doi;*/
 
 				     var issn = get_issn(params);
 				     var isbn = get_issn(params);
@@ -1144,7 +1148,7 @@
 				     } else {
 					 nextAjaxCall();
 				     }
-				 }
+				 } 
 			     };
 
 			     var openAccessQuery = function () {
@@ -1163,8 +1167,9 @@
 				     }
 				 });
 			     }
-
+			     
 			     idresolveExpansion(openAccessQuery);
+			     
 			 }
 
 			 $('a.holdingslink').click(function(e) {
