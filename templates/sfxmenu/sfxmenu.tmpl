@@ -359,7 +359,9 @@
 		     return params['rft.oclcnum'];
 		 } else if ('sid' in params && params['sid'] == 'FirstSearch:WorldCat' && 'pid' in params) {
 		     var matches = params['pid'].match(/<accession number>(.*)<\/accession number>/);
-		     if (matches.length >= 2) {
+		     if (!matches) {
+			 return '';
+		     } else if (matches.length >= 2) {
 			 return matches[1];
 		     } else {
 			 return '';
@@ -953,10 +955,10 @@
 		     output.push('ISSN: ' + issn);
 		 }
 
-		 // var oclcnum = get_oclcnum(params);
-		 // if (oclcnum) {
-		 //     output.push('OCLC # ' + oclcnum);
-		 // }
+		 var oclcnum = get_oclcnum(params);
+		 if (oclcnum) {
+		     output.push('OCLC # ' + oclcnum);
+		 }
 
 		 if (output) {
 		     self.append('<p>' + output.join(' ') + '</p>');
@@ -1202,7 +1204,7 @@
 		 var journaltitle = get_journal_title(params);
 		 var isbn         = get_isbn(params);
 		 var issn         = get_issn(params);
-		 // var oclc         = get_oclcnum(params);
+		 var oclc         = get_oclcnum(params);
 		 var year         = get_year(params);
 
 		 var standard_number_type = '';
