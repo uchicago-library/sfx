@@ -1554,7 +1554,7 @@
 		 var q = 'https://www.lib.uchicago.edu/cgi-bin/subnetclass?jsoncallback=?';
 		 $.getJSON(q, function(data) {
 		     gtag('event', 'Subnetclass_dimension', {'Subnetclass': 12});
-		 }).fail(console.log("error: bad certificate");
+		 });
 
 		 if (typeof $('body').track === 'function') {
 		     $('body').track();
