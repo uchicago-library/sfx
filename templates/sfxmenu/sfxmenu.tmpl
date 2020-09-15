@@ -1120,8 +1120,7 @@
 					 if (no_standard_number) {
 					     nextAjaxCall();
 					 } else {
-					     () => {};
-					     // window.location.replace(data);
+					     window.location.replace(data);
 					 }
 
 				     },
@@ -1555,7 +1554,7 @@
 		 var q = 'https://www.lib.uchicago.edu/cgi-bin/subnetclass?jsoncallback=?';
 		 $.getJSON(q, function(data) {
 		     gtag('event', 'Subnetclass_dimension', {'Subnetclass': 12});
-		 });
+		 }).fail(console.log("error: bad certificate");
 
 		 if (typeof $('body').track === 'function') {
 		     $('body').track();
