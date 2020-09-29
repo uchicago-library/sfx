@@ -1445,13 +1445,12 @@
 		 var issn = get_issn(params);
 		 var sid = get_sid(params);
 
-		 // TODO: remove genre == 'book' part post COVID-19
-		 if (genre == 'bookitem' || genre == 'book') {
+		 if (genre == 'bookitem') {
 		     jtitle = get_title(params);
 		     issn = get_isbn(params);
 		 }
-		 // TODO: remove genre == 'book' part post COVID-19
-		 if (genre == 'bookitem' || genre == 'journal' || genre == 'book') {
+
+		 if (genre == 'bookitem' || genre == 'journal') {
 		     genre = 'article';
 		 }
 		 
@@ -1616,14 +1615,12 @@
 	    
 	    <!-- In the Library -->
 	    <div class="holdings-locpanel" id="gotitsection" data-openurl="<TMPL_VAR NAME='OPENURL'>"></div>
-
-	    <!-- Other Libraries -->
 	    <div class="holdings-locpanel">
 		<div class="locpanel-heading getit"><h2>Other Libraries</h2></div>
 		<div id="e-links" class="holdings-unit">
-		    <a id="otherlibrarieslink" href="#" class="text-getit service" data-openurl="<TMPL_VAR NAME='OPENURL'>" data-ga-category="other-libraries" data-ga-action="click" data-ga-label="Request via Interlibrary Loan"><i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i> Request a PDF of an article or chapter via Interlibrary Loan </a>
+		    <a id="otherlibrarieslink" href="#" class="text-getit service" data-openurl="<TMPL_VAR NAME='OPENURL'>" data-ga-category="other-libraries" data-ga-action="click" data-ga-label="Request via Interlibrary Loan"><i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i> Request via Interlibrary Loan</a>
 		    
-		    <small>(Full books currently unavailable due to COVID-19.)</small>
+		    <small>Interlibrary Loan now includes the UBorrow and BorrowDirect delivery services</small>
 		</div>
 	    </div>
 	</div>
