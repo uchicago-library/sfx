@@ -1164,7 +1164,7 @@
 				 $.ajax({
 				     cache: true,
 				     dataType: 'json',
-				     url: ('https://www.lib.uchicago.edu/cgi-bin/openaccess-0.23.1?code=6685&function=openaccess&openurl=' + openurl + '&callback=?'),
+				     url: ('https://www.lib.uchicago.edu/cgi-bin/openaccess?code=6685&function=openaccess&openurl=' + openurl + '&callback=?'),
 				     success: function(data) {
 					 isAvailable();
 					 self.find('.e-links').append(openAccessHTML(data['url'],
