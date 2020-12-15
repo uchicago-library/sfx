@@ -1094,8 +1094,15 @@
 			     };
 			     // display entry for a single open access source
 			     var openAccessHTML = function (link, provider, providerLink) {
-				 var divs = ('<div class="row"><div class="result-title"><a class="holdingslink" href="' + link + '" data-ga-category="online" data-ga-action="click" data-ga-label="Available as Open Access"> Available as Open Access <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a><br><small>Located via <a href="' + providerLink + '">' + provider + '</a> and <a href="https://openaccessbutton.org/">Open Access Button</a></small></div></div>');
-				 return divs;
+				 var pdfDiv = ('<div class="row"><div class="result-title"><a class="holdingslink" href="' + link + '" data-ga-category="online" data-ga-action="click" data-ga-label="Available as Open Access"> Available as Open Access <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a><br>');
+				 var providerDiv = function () {
+				     if (providerLink && provider) {
+					 return '<small>Located via <a href="' + providerLink + '">' + provider + '</a> and <a href="https://openaccessbutton.org/">Open Access Button</a></small></div></div>';
+				     } else {
+					 return '';
+				     }
+				 };
+				 return (pdfDiv + providerDiv());
 			     };
 
 
@@ -1157,7 +1164,7 @@
 				 $.ajax({
 				     cache: true,
 				     dataType: 'json',
-				     url: ('https://www.lib.uchicago.edu/cgi-bin/openaccess?code=6685&function=openaccess&openurl=' + openurl + '&callback=?'),
+				     url: ('https://www.lib.uchicago.edu/cgi-bin/openaccess-0.23.1?code=6685&function=openaccess&openurl=' + openurl + '&callback=?'),
 				     success: function(data) {
 					 isAvailable();
 					 self.find('.e-links').append(openAccessHTML(data['url'],
