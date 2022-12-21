@@ -1198,247 +1198,11 @@
 
 	     $.fn.gotitsection = function() {
 		 var self = this;
-
-		 var gotit_service = 'https://www.lib.uchicago.edu/cgi-bin/gotit';
-		 var openurl_query_string = self.data('openurl').replace(/^[^?]*\?/, '');
-		 var params = parse_query_string(openurl_query_string);
-
-		 var author       = get_author(params);
-		 var volume       = get_volume(params);
-		 var issue        = get_issue(params);
-		 var pages        = get_page_range(params);
-		 var aulast       = get_aulast(params);
-		 var journaltitle = get_journal_title(params);
-		 var isbn         = get_isbn(params);
-		 var issn         = get_issn(params);
-		 var oclc         = get_oclcnum(params);
-		 var year         = get_year(params);
-
-		 var standard_number_type = '';
-		 if (isbn) {
-		     standard_number_type = 'ISBN';
-		 } else if (issn) {
-		     standard_number_type = 'ISSN';
-		 } else if (oclc) {
-		     standard_number_type = 'OCLC';
-		 }
-
-		 var genre = get_genre(params);
-
-		 if (genre == 'article') {
-		     var title = get_article_title(params);
-		 } else {
-		     var title = get_title(params);
-		 }
-
-		 if (genre == 'article' || genre == 'journal') {
-		     var catalog_search_url = 'https://catalog.lib.uchicago.edu/vufind/Search/Results?lookfor=' + encodeURIComponent(journaltitle) + '&amp;type=JournalTitle';
-		     var human_readable_title_type = 'journal title';
-		 } else if (genre == 'bookitem') {
-		     // if the genre is chapter, do an advanced search for the book title
-		     var catalog_search_url = 'https://catalog.lib.uchicago.edu/vufind/Search/Results?bool0%5B%5D=AND&lookfor0%5B%5D=' + encodeURIComponent(title) + '&type0%5B%5D=Title';
-		     var human_readable_title_type = 'title';
-		 } else {
-		     // if the genre is book, do an advanced search for the title and author.
-		     var catalog_search_url = 'https://catalog.lib.uchicago.edu/vufind/Search/Results?bool0%5B%5D=AND&lookfor0%5B%5D=' + encodeURIComponent(title) + '&type0%5B%5D=Title&lookfor0%5B%5D=' + encodeURIComponent(aulast) + '&type0%5B%5D=Author';
-		     var human_readable_title_type = 'title';
-		 }
-
-		 if (isbn) {
-		     var url = gotit_service + '?code=48976&function=gotit&type=isbn&query=' + encodeURIComponent(isbn) + '&callback=?';
-		 } else if (issn && volume) {
-		     var url = gotit_service + '?code=48976&function=gotit&type=openurl&query=' + encodeURIComponent('http://www.example.com?issn=' + issn + '&volume=' + volume) + '&callback=?';
-		 } else if (issn) {
-		     var url = gotit_service + '?code=48976&function=gotit&type=issn&query=' + encodeURIComponent(issn) + '&callback=?';
-		 } else if (oclc) {
-		     var url = gotit_service + '?code=48976&function=gotit&type=openurl&query=' + encodeURIComponent('http://www.example.com/?oclc=' + oclc) + '&callback=?';
-		 } else {
-		     self.append('<div class="locpanel-heading"><h2>In the Library</h2></div>');
-		     self.append('<div id="e-links" class="holdings-unit"><div class="alert alert-no-match" role="alert">No <strong>standard number</strong> in citation - could not automatically search Library catalog. <div class="resubmit-search"><a href="' + catalog_search_url + '" data-ga-category="in-the-library" data-ga-action="click" data-ga-label="Search the Library catalog by ' + human_readable_title_type + '">Search the Library catalog <strong>by ' + human_readable_title_type + '</strong></a> </div></div></div>');
-		     return;
-		 }
-		 $.ajax({
-		     cache: true,
-		     dataType: 'json',
-		     url: url,
-		     success: function(data) {
-			 // save data for later. 
-			 $('#gotitsection').data('data', data);
-
-			 // header
-			 self.append('<div class="locpanel-heading"><h2>In the Library</h2></div>');
-
-			 var match = false;
-			 for (var i = 0; i < data['result'].length; i++) {
-			     if (data['result'][i]['status'] == 'available' || data['result'][i]['status'] == 'multivols') {
-				 if (data['result'][i]['print'].length > 0) {
-				     match = true;
-				 }
-			     }
-			     if (data['result'][i]['status'] == 'unavailable' && data['result'][i]['reason'] != 'Volume not owned') {
-				 match = true;
-			     }
-			     // if there is something in the locs array, this item has print holdings.
-			     // this will even work for journals, where the availability message is taking 
-			     // the specific article into consideration for the print array.
-			     if (data['result'][i]['locs'].length > 0) { 
-				 match = true;
-			     }
-			 }
-			 if (match) {
-			     self.append('<div class="e-links holdings-unit">');
-			     // there is a match for this...
-			     if (issn) {
-				 self.find('.e-links').append('<div class="alert alert-unknown" role="alert">Some volumes found in the Library Catalog</div>');
-			     } else {
-				 self.find('.e-links').append('<div class="alert alert-success-match" role="alert">There is a match for this <strong>' + encodeURIComponent(standard_number_type) + '</strong> in the Library Catalog</div>');
-			     }
-			     for (var i = 0; i < data['result'].length; i++) {
-				 if (data['result'][i]['locs'].length == 0) {
-				     continue;
-				 }
-
-				 var gotit_title = data['result'][i]['title'];
-
-				 var availability_text = '';
-				 var availability_html = '';
-				 if (data['result'][i]['status'] == 'available') {
-				     availability_text = 'Available';
-				     availability_html = '<span class="text-success">' + availability_text + '</span>';
-				 } else if (data['result'][i]['status'] == 'multivol' || data['result'][i]['status'] == 'nomatch') {
-				     availability_text = 'See record for availability';
-				     availability_html = '<span class="text-unknown">' + availability_text + '</span>';
-				 } else if (data['result'][i]['status'] == 'unavailable') {
-				     availability_text = 'Not Available';
-				     availability_html = '<span class="text-danger">' + availability_text + '</span>';
-				 } 
-				 
-				 var call_numbers = [];
-				 for (var j = 0; j < data['result'][i]['print'].length; j++) {
-				     call_numbers.push(data['result'][i]['print'][j]['callno']);
-				 }
-				 for (var j = 0; j < data['result'][i]['callnos'].length; j++) {
-				     call_numbers.push(data['result'][i]['callnos'][j]);
-				 }
-				 // unique elements
-				 call_numbers = call_numbers.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
-				 call_numbers = call_numbers.join(', ');
-				 
-				 if (data['result'][i]['locs'].length == 0) {
-				     locations = '';
-				 } else if (data['result'][i]['locs'].length == 1) {
-				     var location_code_chunk = data['result'][i]['locs'][0].split('/').pop();
-				     if (location_code_chunk) {
-					 locations = get_human_readable_location(location_code_chunk);
-				     } else {
-					 locations = '';
-				     }
-				 } else if (data['result'][i]['locs'].length > 1) {
-				     locations = 'Multiple Locations';
-				 }
-				 
-				 // scan and deliver...
-				 var sndable = false;
-				 if (data['result'][i]['status'] == 'multivol' || (data['result'][i]['status'] == 'nomatch' && data['result'][i]['callnos'].length > 0)) {
-				     sndable = true;
-				 } else {
-				     for (var j = 0; j < data['result'][i]['print'].length; j++) {
-					 if (data['result'][i]['print'][j].sndable == 'eligible' || data['result'][i]['print'][j].sndable == 'punt') {
-					     sndable = true;
-					 }
-				     }
-				 }
-				 if (sndable) {
-				     if (genre == 'book') {
-					 var scan_and_deliver_params = '&PhotoJournalTitle='          + encodeURIComponent(title) +
-								       '&PhotoJournalVolume='         + encodeURIComponent(volume) +
-								       '&PhotoJournalYear='           + encodeURIComponent(year) +
-								       '&ISSN='                       + encodeURIComponent(isbn) +
-								       '&PhotoJournalInclusivePages=' + encodeURIComponent(pages) +
-								       '&Location='                   + encodeURIComponent(locations) +
-								       '&CallNumber='                 + encodeURIComponent(call_numbers);
-				     } else {
-					 var scan_and_deliver_params = '&PhotoJournalTitle='          + encodeURIComponent(journaltitle) +
-								       '&PhotoJournalVolume='         + encodeURIComponent(volume) +
-								       '&PhotoJournalIssue='          + encodeURIComponent(issue) +
-								       '&ISSN='                       + encodeURIComponent(issn) +
-								       '&PhotoJournalInclusivePages=' + encodeURIComponent(pages) +
-								       '&PhotoArticleTitle='          + encodeURIComponent(title) +
-								       '&Location='                   + encodeURIComponent(locations) +
-								       '&CallNumber='                 + encodeURIComponent(call_numbers);
-				     }
-				     
-				     var scan_and_deliver_link = '<a href="https://requests.lib.uchicago.edu/illiad/illiad.dll?Action=10&Form=20&Value=GenericRequestGargoyleExpress&sid=ScanDeliver&genre=docdel' + scan_and_deliver_params + '" class="service external" data-ga-category="in-the-library" data-ga-action="click" data-ga-label="Scan and Deliver"><i class="fa fa-fw fa-file-text-o" aria-hidden="true"></i> Scan and Deliver</a>';
-				 } else {
-				     var scan_and_deliver_link = '';
-				 }
-				 var label = availability_text + '|' + locations + '|';
-				 if (scan_and_deliver_link) {
-				     label = label + 'Scan and Deliver|';
-				 }
-				 label = label + call_numbers;
-				 self.find('.e-links').append('<div class="row in-library"><div class="result-title"><a href="https://catalog.lib.uchicago.edu/vufind/Record/' + encodeURIComponent(data['result'][i]['bibid']) + '" data-ga-category="in-the-library" data-ga-action="click" data-ga-label="' + label + '">' + gotit_title + ' ' + call_numbers + ' <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></div>' + availability_html + '<span class="location">' + locations + '</span>' + scan_and_deliver_link + '</div>');
-			     }
-			     // or search the library catalog...
-			     self.find('.e-links').append('<div class="row"><span class="view-all">OR <a href="' + catalog_search_url + '" data-ga-category="in-the-library" data-ga-action="click" data-ga-label="Search the Library Catalog for works with this ' + human_readable_title_type + '">Search the Library Catalog for works with this <strong>' + human_readable_title_type + '</strong></a></span></div>');
-			 } else {
-			     self.append('<div class="e-links holdings-unit"><div class="alert alert-no-match" role="alert"><strong>' + standard_number_type + '</strong> not located in the UChicago Library collection.<div class="resubmit-search"><a href="' + catalog_search_url + '" data-ga-category="in-the-library" data-ga-action="click" data-ga-label="Search the Library catalog by title">Search the Library catalog <strong>by title</strong></a> </div></div></div>');
-			 }
-
-			 // Then, go back back into the "Online" section and add e-holdings, if appropriate. 
-			 if (genre == 'book' || genre == 'bookitem') {
-			     $(document).ajaxStop(function() {
-				 var data = $('#gotitsection').data('data');
-
-				 var has_eholdings = false;
-				 for (var i = 0; i < data['result'].length; i++) {
-				     if (data['result'][i]['eholdingspresent']) {
-					 has_eholdings = true;
-				     }
-				 }
-
-				 if (has_eholdings) {
-				     var elinks = $('#holdingssectionNew').find('.e-links');
-				     elinks.empty();
-				     elinks.append('<div class="alert alert-success-match" role="alert">Available</div>');
-				     
-				     for (var i = 0; i < data['result'].length; i++) {
-					 for (var j = 0; j < data['result'][i]['eholding'].length; j++) {
-					     var href = data['result'][i]['eholding'][j]['url'];
-					     if (data['result'][i]['eholding'][j]['text'].join('') == '') {
-						 var text = href;
-					     } else {
-						 var text = data['result'][i]['eholding'][j]['text'].join('');
-					     }
-					     // proxy server links are http as of September 2018
-					     elinks.append('<div><a href="http://proxy.uchicago.edu/login?url=' + href + '" data-ga-category="online" data-ga-action="click" data-ga-label="' + text + '">' + text + '</a></div>');
-					 }
-				     }
-				 } else {
-				     $('#sfxforms').find('.section').each(function() {
-					 if ($(this).find('h2').text() == 'Find It Online') {
-					     var elinks = $('#holdingssection').find('.e-links');
-					     elinks.empty();
-					     elinks.append('<div class="alert alert-success-match" role="alert">Available</div>');
-					     $(this).find('tr').each(function() {
-						 var form = $(this).find('form');
-						 var text = $(this).find('a').text();
-						 var a = $('<a href="#" data-ga-category="online" data-ga-action="click" data-ga-label="' + text + '">' + text + '</a>');
-						 var div = $('<div></div>');
-						 elinks.append(div);
-						 div.append(a);
-						 a.click(function() {
-						     form.submit();
-						 });
-					     });
-					 }
-				     });
-				 }
-			     });
-			 }
-		     }
-		 });  
+		 self.append('<div class="locpanel-heading"><h2>In the Library</h2></div>');
+		 self.append('<div class="e-links holdings-unit"> <i class="fa fa-book" aria-hidden="true"></i> <a href="https://catalog.lib.uchicago.edu/vufind">Check the Library Catalog for availability</a> <p/> </div>');
 	     }
+
+
 
 	     $.fn.otherlibrarieslink = function() {
 		 var self = this;
@@ -1464,17 +1228,17 @@
 		 var the_author = $('#sfx_au').text();
 		 
 		 var requests_params = {
-		     'genre':             genre,		     
-		     'rft.jtitle':        jtitle,
-		     'rft.volume':        get_volume(params),
-		     'rft.issue':         get_issue(params),
-		     'PhotoJournalMonth': get_month(params),
-		     'PhotoJournalYear':  get_year(params),
-		     'rft.date':          get_year(params),
-		     'rft.issn':          issn,
-		     'rft.title':         get_title(params),
-		     'rft.atitle':        get_article_title(params),
-		     'sid':               sid
+		 'genre':             genre,		     
+		 'rft.jtitle':        jtitle,
+		 'rft.volume':        get_volume(params),
+		 'rft.issue':         get_issue(params),
+		 'PhotoJournalMonth': get_month(params),
+		 'PhotoJournalYear':  get_year(params),
+		 'rft.date':          get_year(params),
+		 'rft.issn':          issn,
+		 'rft.title':         get_title(params),
+		 'rft.atitle':        get_article_title(params),
+		 'sid':               sid
 		 };
 
 
@@ -1511,7 +1275,7 @@
 		 }
 
 		 var base_url = 'https://requests.lib.uchicago.edu/illiad/illiad.dll/openurl?';
-		 var url = base_url + param_arr.join('&');
+						var url = base_url + param_arr.join('&');
 		 self.attr('href', url);
 	     }
 
