@@ -12,10 +12,14 @@ templates/*
 
 !templates/targets/
 !templates/sfxmenu/
+!templates/journalsearch/
 templates/targets/*
 
 templates/sfxmenu/*
 !templates/sfxmenu/sfxmenu.tmpl
+
+templates/journalsearch/*
+!templates/journalsearch/title_head.tmpl
 
 !templates/targets/feedback/
 templates/targets/feedback/*

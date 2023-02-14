@@ -1,0 +1,52 @@
+<!DOCTYPE HTML >
+<html lang="en" class="no-js" <TMPL_IF RTL_DIR>dir="rtl"</TMPL_IF>>
+
+<head>
+    <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>
+    	 <TMPL_IF FOR_BOOKS>
+	     	<TMPL_VAR NAME='MESSAGE("AZ JournalSearch","General--PageTitleBook")' ESCAPE=HTML>
+	    <TMPL_ELSE>
+	    	<TMPL_VAR NAME='MESSAGE("AZ JournalSearch","General--PageTitle")' ESCAPE=HTML>
+	    </TMPL_IF>
+    </title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- Source sans pro font -->
+    <link rel="stylesheet" href="/<TMPL_VAR INSTANCE>/css/journalsearch/googleapis_fonts.css" type="text/css">
+    <!-- material lite css and icons -->
+    <link rel="stylesheet" href="/<TMPL_VAR INSTANCE>/css/journalsearch/Material_Icons.css" type='text/css'>
+    <link rel="stylesheet" href="/<TMPL_VAR INSTANCE>/css/journalsearch/material.blue_grey-red.min.css" type='text/css'/>
+    <link href="/<TMPL_VAR INSTANCE>/css/admin/jquery-ui-1.12.4.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type='text/css' href="/<TMPL_VAR INSTANCE>/css/journalsearch/vendor/getmdl-select.min.css">
+    <!-- main styles -->
+    <link href="/<TMPL_VAR INSTANCE>/css/journalsearch/style.min.css" rel="stylesheet" type="text/css"> 
+    <!-- SFX custom styles -->
+
+	<TMPL_IF ENABLE_AJAX>
+		<link rel="stylesheet" type="text/css" href="/<TMPL_VAR INSTANCE>/css/autocomplete/jquery_html.css">
+	</TMPL_IF>		
+
+    <script type="text/javascript" src="/<TMPL_VAR NAME='INSTANCE'>/js/jquery/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/<TMPL_VAR NAME='INSTANCE'>/js/jquery/jquery-ui-1.12.1.min.js"></script>
+    <script type="text/javascript" src="/<TMPL_VAR NAME='INSTANCE'>/js/autocomplete/base64.js"></script>
+    <script type="text/javascript" src="/<TMPL_VAR INSTANCE>/js/material-design-lite/getmdl-select.min.js"></script>
+    <script type="text/javascript" src="/<TMPL_VAR INSTANCE>/js/handlebars/handlebars.min.js"></script>
+	<script defer type="text/javascript" src="/<TMPL_VAR INSTANCE>/js/material-design-lite/material.min.js"></script>
+
+    <script type="text/javascript" src="/<TMPL_VAR INSTANCE>/js/journalsearch/journalSearch.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EWT5B3NZ15"></script>
+    <script>
+     window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+     gtag('js', new Date());
+     gtag('config', 'G-EWT5B3NZ15');
+     gtag('set', 'content_group', 'ejournals');
+    </script>
+
+    <TMPL_IF CUSTOMIZED_CSS>
+		<link REL="stylesheet" TYPE="text/css" href="/<TMPL_VAR NAME='INSTANCE' ESCAPE='HTML'>/css/journalsearch<TMPL_VAR NAME='CUSTOMIZED_CSS' ESCAPE='HTML'>">
+	</TMPL_IF>  
+</head>
