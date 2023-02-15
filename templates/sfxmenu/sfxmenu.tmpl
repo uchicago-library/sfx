@@ -12,16 +12,14 @@
 
 	<title>Find It!</title>
 
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-92567808-1"></script>
+	<!-- Google tag (gtag.js) --> 
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-EWT5B3NZ15"></script>
 	<script>
 	 window.dataLayer = window.dataLayer || [];
 	 function gtag(){dataLayer.push(arguments);}
 	 gtag('js', new Date());
-	 
-	 gtag('config', 'UA-92567808-1', {
-             'custom_map': {'dimension1': 'Subnetclass'}
-	 });
+	 gtag('config', 'G-EWT5B3NZ15');
+	 gtag('set', 'content_group', 'Find It!');
 	</script>
 
 	<!-- Bootstrap core CSS -->
@@ -870,7 +868,7 @@
 
 		 var genre = get_genre(params);
 		 var output = [];
-		 	 
+		 
 		 /* depending on the genre of the item in question, we display the title
 		  * section of the page differently. Items like journal articles have
 		  * citation information that doesn't appear for books. 
@@ -1436,6 +1434,11 @@
 				 }
 			     });
 			 }
+		     },
+		     error: function (data) {
+			 self.append('<div class="locpanel-heading"><h2>In the Library</h2></div>');
+			 self.append('<div id="e-links" class="holdings-unit"><div class="alert alert-no-match" role="alert">We weren\'t able to find this item in the catalog.<div class="resubmit-search"><a href="' + catalog_search_url + '" data-ga-category="in-the-library" data-ga-action="click" data-ga-label="Check the Library Catalog">Search the Library Catalog </a> </div></div></div>');
+			 /* self.append('<div class="e-links holdings-unit"> <i class="fa fa-book" aria-hidden="true"></i> <a href="https://catalog.lib.uchicago.edu/vufind">Check the Library Catalog for availability</a> <p/> </div>'); */
 		     }
 		 });  
 	     }
