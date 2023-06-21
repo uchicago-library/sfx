@@ -1403,10 +1403,10 @@
 				     for (var i = 0; i < data['result'].length; i++) {
 					 for (var j = 0; j < data['result'][i]['eholding'].length; j++) {
 					     var href = data['result'][i]['eholding'][j]['url'];
-					     if (data['result'][i]['eholding'][j]['text'].join('') == '') {
+					     if (data['result'][i]['eholding'][j]['text'] == '') {
 						 var text = href;
 					     } else {
-						 var text = data['result'][i]['eholding'][j]['text'].join('');
+						 var text = data['result'][i]['eholding'][j]['text'];
 					     }
 					     // proxy server links are http as of September 2018
 					     elinks.append('<div><a href="http://proxy.uchicago.edu/login?url=' + href + '" data-ga-category="online" data-ga-action="click" data-ga-label="' + text + '">' + text + '</a></div>');
