@@ -999,11 +999,11 @@
 		  */
 		 
 		 if (issn) {
-		     var url = 'https://www.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&issns=' + issn + '&callback=?';
+		     var url = 'https://restful.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&issns=' + issn + '&callback=?';
 		 } else if (has_sfx_id) {
-		     var url = 'https://www.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&sfx=' + object_id + '&callback=?';
+		     var url = 'https://restful.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&sfx=' + object_id + '&callback=?';
 		 } else {
-		     var url = 'https://www.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&callback=?';
+		     var url = 'https://restful.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&callback=?';
 		 }
 		 // raw URL
 		 var unescaped_openurl = document.URL;
@@ -1141,7 +1141,7 @@
 				     nextAjaxCall();
 				 } else {
 				     var holdings_doi = encodeURIComponent(holdings_doi_unescaped);
-				     var idresolve_url = "https://www.lib.uchicago.edu/cgi-bin/idresolve?code=9344&function=idresolve&callback=redundant&id=" + holdings_doi;
+				     var idresolve_url = "https://restful.lib.uchicago.edu/cgi-bin/idresolve?code=9344&function=idresolve&callback=redundant&id=" + holdings_doi;
 
 				     var issn = get_issn(params);
 				     var isbn = get_issn(params);
@@ -1162,7 +1162,7 @@
 				 $.ajax({
 				     cache: true,
 				     dataType: 'json',
-				     url: ('https://www.lib.uchicago.edu/cgi-bin/openaccess?code=6685&function=openaccess&openurl=' + openurl + '&callback=?'),
+				     url: ('https://restful.lib.uchicago.edu/cgi-bin/openaccess?code=6685&function=openaccess&openurl=' + openurl + '&callback=?'),
 				     success: function(data) {
 					 isAvailable();
 					 self.find('.e-links').append(openAccessHTML(data['url'],
@@ -1197,7 +1197,7 @@
 	     $.fn.gotitsection = function() {
 		 var self = this;
 
-		 var gotit_service = 'https://www.lib.uchicago.edu/cgi-bin/gotit';
+		 var gotit_service = 'https://restful.lib.uchicago.edu/cgi-bin/gotit';
 		 var openurl_query_string = self.data('openurl').replace(/^[^?]*\?/, '');
 		 var params = parse_query_string(openurl_query_string);
 
@@ -1560,7 +1560,7 @@
 		     $(document).off('ajaxStop.ga');
 		     return;
 		 }
-		 var q = 'https://www.lib.uchicago.edu/cgi-bin/subnetclass?jsoncallback=?';
+		 var q = 'https://restful.lib.uchicago.edu/cgi-bin/subnetclass?jsoncallback=?';
 		 $.getJSON(q, function(data) {
 		     gtag('event', 'Subnetclass_dimension', {'Subnetclass': 12});
 		 });
