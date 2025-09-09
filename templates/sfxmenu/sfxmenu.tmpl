@@ -47,6 +47,716 @@
 	<script src="https://sfx.lib.uchicago.edu/sfx_local/js/sfxmenu/jquery.track-everything.2.js"></script>
 
 	<script type="text/javascript">
+
+	 var issn_lookup = {
+	     "00018791": [
+		 1995,
+		 9999
+	     ],
+	     "00032670": [
+		 1995,
+		 9999
+	     ],
+	     "00034266": [
+		 2026,
+		 9999
+	     ],
+	     "00036870": [
+		 1995,
+		 9999
+	     ],
+	     "00092509": [
+		 1995,
+		 9999
+	     ],
+	     "00104825": [
+		 2021,
+		 9999
+	     ],
+	     "0010938X": [
+		 1995,
+		 9999
+	     ],
+	     "00113840": [
+		 1995,
+		 9999
+	     ],
+	     "00119164": [
+		 2017,
+		 9999
+	     ],
+	     "00128252": [
+		 2021,
+		 9999
+	     ],
+	     "00139351": [
+		 2021,
+		 9999
+	     ],
+	     "00144835": [
+		 2021,
+		 9999
+	     ],
+	     "00207462": [
+		 1995,
+		 9999
+	     ],
+	     "00207683": [
+		 1995,
+		 9999
+	     ],
+	     "00219290": [
+		 2021,
+		 9999
+	     ],
+	     "00223999": [
+		 2021,
+		 9999
+	     ],
+	     "00224375": [
+		 1995,
+		 9999
+	     ],
+	     "0022474X": [
+		 1995,
+		 9999
+	     ],
+	     "0022510X": [
+		 2021,
+		 9999
+	     ],
+	     "0025326X": [
+		 1995,
+		 9999
+	     ],
+	     "0026265X": [
+		 1995,
+		 9999
+	     ],
+	     "00319422": [
+		 2021,
+		 9999
+	     ],
+	     "00320633": [
+		 2021,
+		 9999
+	     ],
+	     "00325910": [
+		 1995,
+		 9999
+	     ],
+	     "00344257": [
+		 1995,
+		 9999
+	     ],
+	     "00452068": [
+		 2021,
+		 9999
+	     ],
+	     "00456535": [
+		 1995,
+		 9999
+	     ],
+	     "00651281": [
+		 2001,
+		 9999
+	     ],
+	     "00796816": [
+		 1995,
+		 9999
+	     ],
+	     "00940143": [
+		 2021,
+		 9999
+	     ],
+	     "00982997": [
+		 1995,
+		 9999
+	     ],
+	     "01401963": [
+		 1995,
+		 9999
+	     ],
+	     "01434160": [
+		 2021,
+		 9999
+	     ],
+	     "01462806": [
+		 1995,
+		 9999
+	     ],
+	     "01470272": [
+		 1995,
+		 9999
+	     ],
+	     "01471767": [
+		 1994,
+		 9999
+	     ],
+	     "01497189": [
+		 2021,
+		 9999
+	     ],
+	     "01509861": [
+		 0,
+		 9999
+	     ],
+	     "0160791X": [
+		 1995,
+		 9999
+	     ],
+	     "01650378": [
+		 1995,
+		 9999
+	     ],
+	     "01659936": [
+		 1995,
+		 9999
+	     ],
+	     "01674943": [
+		 1995,
+		 9999
+	     ],
+	     "0167577X": [
+		 1995,
+		 9999
+	     ],
+	     "01675877": [
+		 1995,
+		 9999
+	     ],
+	     "01677012": [
+		 1995,
+		 9999
+	     ],
+	     "01677322": [
+		 2021,
+		 9999
+	     ],
+	     "01678760": [
+		 2021,
+		 9999
+	     ],
+	     "01679317": [
+		 1995,
+		 9999
+	     ],
+	     "01679457": [
+		 1995,
+		 9999
+	     ],
+	     "01681591": [
+		 1995,
+		 9999
+	     ],
+	     "01681656": [
+		 1995,
+		 9999
+	     ],
+	     "01681702": [
+		 1995,
+		 9999
+	     ],
+	     "01689452": [
+		 2021,
+		 9999
+	     ],
+	     "01692607": [
+		 2021,
+		 9999
+	     ],
+	     "0169555X": [
+		 1995,
+		 9999
+	     ],
+	     "01913085": [
+		 0,
+		 9999
+	     ],
+	     "02540584": [
+		 1995,
+		 9999
+	     ],
+	     "02615177": [
+		 1995,
+		 9999
+	     ],
+	     "02659646": [
+		 1995,
+		 9999
+	     ],
+	     "02663538": [
+		 1995,
+		 9999
+	     ],
+	     "02664356": [
+		 2021,
+		 9999
+	     ],
+	     "02680033": [
+		 1995,
+		 9999
+	     ],
+	     "02697491": [
+		 2021,
+		 9999
+	     ],
+	     "02728842": [
+		 1995,
+		 9999
+	     ],
+	     "02755319": [
+		 0,
+		 9999
+	     ],
+	     "02765624": [
+		 0,
+		 9999
+	     ],
+	     "03014207": [
+		 1995,
+		 9999
+	     ],
+	     "03014622": [
+		 2021,
+		 9999
+	     ],
+	     "03043800": [
+		 2017,
+		 9999
+	     ],
+	     "03043894": [
+		 1995,
+		 9999
+	     ],
+	     "0304419X": [
+		 2021,
+		 9999
+	     ],
+	     "03048853": [
+		 1995,
+		 9999
+	     ],
+	     "03069192": [
+		 1995,
+		 9999
+	     ],
+	     "03069877": [
+		 2021,
+		 9999
+	     ],
+	     "0308597X": [
+		 1995,
+		 9999
+	     ],
+	     "03088146": [
+		 1995,
+		 9999
+	     ],
+	     "0346251X": [
+		 1995,
+		 9999
+	     ],
+	     "03601323": [
+		 1995,
+		 9999
+	     ],
+	     "03605442": [
+		 2017,
+		 9999
+	     ],
+	     "03608352": [
+		 1995,
+		 9999
+	     ],
+	     "03619230": [
+		 2021,
+		 9999
+	     ],
+	     "03766357": [
+		 2021,
+		 9999
+	     ],
+	     "03783812": [
+		 1995,
+		 9999
+	     ],
+	     "03790738": [
+		 1995,
+		 9999
+	     ],
+	     "07317085": [
+		 1995,
+		 9999
+	     ],
+	     "07328893": [
+		 2017,
+		 9999
+	     ],
+	     "07380593": [
+		 1995,
+		 9999
+	     ],
+	     "07418329": [
+		 1995,
+		 9999
+	     ],
+	     "08855765": [
+		 2021,
+		 9999
+	     ],
+	     "08898529": [
+		 2021,
+		 9999
+	     ],
+	     "09213449": [
+		 1995,
+		 9999
+	     ],
+	     "09242031": [
+		 1995,
+		 9999
+	     ],
+	     "09257535": [
+		 1995,
+		 9999
+	     ],
+	     "09259635": [
+		 2017,
+		 9999
+	     ],
+	     "09270248": [
+		 1995,
+		 9999
+	     ],
+	     "09277757": [
+		 2021,
+		 9999
+	     ],
+	     "0929693X": [
+		 2021,
+		 9999
+	     ],
+	     "09409602": [
+		 2001,
+		 9999
+	     ],
+	     "09447113": [
+		 2001,
+		 9999
+	     ],
+	     "09503293": [
+		 1995,
+		 9999
+	     ],
+	     "09601481": [
+		 1995,
+		 9999
+	     ],
+	     "09608524": [
+		 1995,
+		 9999
+	     ],
+	     "09608966": [
+		 2021,
+		 9999
+	     ],
+	     "09626298": [
+		 2021,
+		 9999
+	     ],
+	     "09639969": [
+		 1995,
+		 9999
+	     ],
+	     "09645691": [
+		 1995,
+		 9999
+	     ],
+	     "0965206X": [
+		 0,
+		 9999
+	     ],
+	     "09666362": [
+		 2017,
+		 9999
+	     ],
+	     "09736883": [
+		 0,
+		 9999
+	     ],
+	     "09819428": [
+		 2017,
+		 9999
+	     ],
+	     "09877053": [
+		 1995,
+		 9999
+	     ],
+	     "10018417": [
+		 0,
+		 9999
+	     ],
+	     "10050302": [
+		 0,
+		 9999
+	     ],
+	     "10478477": [
+		 2021,
+		 9999
+	     ],
+	     "10506411": [
+		 1995,
+		 9999
+	     ],
+	     "10525157": [
+		 2021,
+		 9999
+	     ],
+	     "10534822": [
+		 1995,
+		 9999
+	     ],
+	     "10548807": [
+		 1995,
+		 9999
+	     ],
+	     "10590560": [
+		 1995,
+		 9999
+	     ],
+	     "10603743": [
+		 1995,
+		 9999
+	     ],
+	     "10647406": [
+		 2021,
+		 9999
+	     ],
+	     "10752935": [
+		 1995,
+		 9999
+	     ],
+	     "10933263": [
+		 0,
+		 9999
+	     ],
+	     "10967192": [
+		 2021,
+		 9999
+	     ],
+	     "12623636": [
+		 0,
+		 9999
+	     ],
+	     "12687731": [
+		 1995,
+		 9999
+	     ],
+	     "12962074": [
+		 0,
+		 9999
+	     ],
+	     "13601385": [
+		 2021,
+		 9999
+	     ],
+	     "13608592": [
+		 0,
+		 9999
+	     ],
+	     "13687646": [
+		 2012,
+		 9999
+	     ],
+	     "13695266": [
+		 0,
+		 9999
+	     ],
+	     "13698478": [
+		 0,
+		 9999
+	     ],
+	     "13815148": [
+		 0,
+		 9999
+	     ],
+	     "13835866": [
+		 0,
+		 9999
+	     ],
+	     "13865056": [
+		 2021,
+		 9999
+	     ],
+	     "13866532": [
+		 2001,
+		 9999
+	     ],
+	     "14384221": [
+		 2001,
+		 9999
+	     ],
+	     "14623889": [
+		 0,
+		 9999
+	     ],
+	     "14629011": [
+		 0,
+		 9999
+	     ],
+	     "14678039": [
+		 2017,
+		 9999
+	     ],
+	     "14992671": [
+		 0,
+		 9999
+	     ],
+	     "15330028": [
+		 0,
+		 9999
+	     ],
+	     "15587878": [
+		 0,
+		 9999
+	     ],
+	     "15660702": [
+		 2021,
+		 9999
+	     ],
+	     "15726657": [
+		 2017,
+		 9999
+	     ],
+	     "1747938X": [
+		 0,
+		 9999
+	     ],
+	     "1752928X": [
+		 0,
+		 9999
+	     ],
+	     "18711871": [
+		 0,
+		 9999
+	     ],
+	     "1871403X": [
+		 0,
+		 9999
+	     ],
+	     "18715192": [
+		 0,
+		 9999
+	     ],
+	     "18743919": [
+		 0,
+		 9999
+	     ],
+	     "18773435": [
+		 2022,
+		 9999
+	     ],
+	     "18777821": [
+		 2016,
+		 9999
+	     ],
+	     "20954956": [
+		 0,
+		 9999
+	     ],
+	     "22104224": [
+		 0,
+		 9999
+	     ],
+	     "22106707": [
+		 0,
+		 9999
+	     ],
+	     "22107401": [
+		 2021,
+		 9999
+	     ],
+	     "22113649": [
+		 0,
+		 9999
+	     ],
+	     "22120955": [
+		 0,
+		 9999
+	     ],
+	     "22124209": [
+		 0,
+		 9999
+	     ],
+	     "22124403": [
+		 0,
+		 9999
+	     ],
+	     "22145745": [
+		 0,
+		 9999
+	     ],
+	     "2214790X": [
+		 0,
+		 9999
+	     ],
+	     "2352152X": [
+		 0,
+		 9999
+	     ],
+	     "23524928": [
+		 0,
+		 9999
+	     ],
+	     "23525568": [
+		 0,
+		 9999
+	     ],
+	     "24054569": [
+		 0,
+		 9999
+	     ],
+	     "24054577": [
+		 0,
+		 9999
+	     ],
+	     "24519103": [
+		 0,
+		 9999
+	     ],
+	     "25425293": [
+		 0,
+		 9999
+	     ],
+	     "25889311": [
+		 0,
+		 9999
+	     ],
+	     "25899333": [
+		 2026,
+		 9999
+	     ]
+	 };
+
+	 function clean_up_issn(issnstring) {
+	     var output = issnstring.replace('-', '');
+	     return output
+	 };
+
+	 function determine_url(issn, year, ags_url, fallback_url) {
+	     var year_range = issn_lookup[clean_up_issn(issn)];
+	     if (year_range) {
+		 if (year >= year_range[0] && year <= year_range[1]) {
+		     return ags_url;
+		 } else {
+		     return fallback_url
+		 }
+	     } else {
+		 return fallback_url;
+	     };
+	 };
+
 	 (function($) {
 	     var debug = false;
 
@@ -999,11 +1709,11 @@
 		  */
 		 
 		 if (issn) {
-		     var url = 'https://www.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&issns=' + issn + '&callback=?';
+		     var url = 'https://restful.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&issns=' + issn + '&callback=?';
 		 } else if (has_sfx_id) {
-		     var url = 'https://www.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&sfx=' + object_id + '&callback=?';
+		     var url = 'https://restful.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&sfx=' + object_id + '&callback=?';
 		 } else {
-		     var url = 'https://www.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&callback=?';
+		     var url = 'https://restful.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&callback=?';
 		 }
 		 // raw URL
 		 var unescaped_openurl = document.URL;
@@ -1141,7 +1851,7 @@
 				     nextAjaxCall();
 				 } else {
 				     var holdings_doi = encodeURIComponent(holdings_doi_unescaped);
-				     var idresolve_url = "https://www.lib.uchicago.edu/cgi-bin/idresolve?code=9344&function=idresolve&callback=redundant&id=" + holdings_doi;
+				     var idresolve_url = "https://restful.lib.uchicago.edu/cgi-bin/idresolve?code=9344&function=idresolve&callback=redundant&id=" + holdings_doi;
 
 				     var issn = get_issn(params);
 				     var isbn = get_issn(params);
@@ -1162,7 +1872,7 @@
 				 $.ajax({
 				     cache: true,
 				     dataType: 'json',
-				     url: ('https://www.lib.uchicago.edu/cgi-bin/openaccess?code=6685&function=openaccess&openurl=' + openurl + '&callback=?'),
+				     url: ('https://restful.lib.uchicago.edu/cgi-bin/openaccess?code=6685&function=openaccess&openurl=' + openurl + '&callback=?'),
 				     success: function(data) {
 					 isAvailable();
 					 self.find('.e-links').append(openAccessHTML(data['url'],
@@ -1197,7 +1907,7 @@
 	     $.fn.gotitsection = function() {
 		 var self = this;
 
-		 var gotit_service = 'https://www.lib.uchicago.edu/cgi-bin/gotit';
+		 var gotit_service = 'https://restful.lib.uchicago.edu/cgi-bin/gotit';
 		 var openurl_query_string = self.data('openurl').replace(/^[^?]*\?/, '');
 		 var params = parse_query_string(openurl_query_string);
 
@@ -1444,6 +2154,13 @@
 	     }
 
 	     $.fn.otherlibrarieslink = function() {
+		 /* $.ajax({
+		    cache: false,
+		    method: 'GET',
+		    url: "https://www2.lib.uchicago.edu/~teichman/",
+		    success: function(data) {alert ("ok");},
+		    error: function (data) {alert (JSON.stringify (data));}
+		    }) */
 		 var self = this;
 
 		 var openurl = $('#sfx_openurl').text();
@@ -1477,7 +2194,9 @@
 		     'rft.issn':          issn,
 		     'rft.title':         get_title(params),
 		     'rft.atitle':        get_article_title(params),
-		     'sid':               sid
+		     'sid':               sid,
+		     'doi':               get_doi_for_idresolve(params),
+		     'sso':               '3068-2'
 		 };
 
 
@@ -1513,9 +2232,10 @@
 		     }
 		 }
 
-		 var base_url = 'https://requests.lib.uchicago.edu/illiad/illiad.dll/openurl?';
+		 var base_url = 'https://www.reprintsdesk.com/landing/scholar.aspx?';
 		 var url = base_url + param_arr.join('&');
-		 self.attr('href', url);
+		 /* self.attr('href', url); */
+		 self.attr('href', determine_url(issn, get_year(params), "google.com", "archlinux.org"));
 	     }
 
 	     $(document).ready(function() {
@@ -1560,7 +2280,7 @@
 		     $(document).off('ajaxStop.ga');
 		     return;
 		 }
-		 var q = 'https://www.lib.uchicago.edu/cgi-bin/subnetclass?jsoncallback=?';
+		 var q = 'https://restful.lib.uchicago.edu/cgi-bin/subnetclass?jsoncallback=?';
 		 $.getJSON(q, function(data) {
 		     gtag('event', 'Subnetclass_dimension', {'Subnetclass': 12});
 		 });
@@ -1638,31 +2358,31 @@
 	<div id="sfxforms" style="display: none;">
 	    <TMPL_IF NO_SERVICES>
 		<TMPL_VAR NAME='NO_SERVICES' ESCAPE='HTML'>
-		    <TMPL_ELSE>
-			<TMPL_IF GROUPING_ENABLED>
-			    <TMPL_INCLUDE grouping_yes.tmpl>
-				<TMPL_ELSE>
-				    <TMPL_INCLUDE grouping_no.tmpl>
-			</TMPL_IF>
+		<TMPL_ELSE>
+		    <TMPL_IF GROUPING_ENABLED>
+			<TMPL_INCLUDE grouping_yes.tmpl>
+			    <TMPL_ELSE>
+				<TMPL_INCLUDE grouping_no.tmpl>
+		    </TMPL_IF>
 	    </TMPL_IF>
 	</div>
 
 	<div id="sfxdata" style="display: none;">
 	    <div id="sfx_atitle"><TMPL_IF ATITLE><TMPL_VAR NAME='ATITLE'></TMPL_IF></div>
-		<div id="sfx_aufirst"><TMPL_IF AUFIRST><TMPL_VAR NAME='AUFIRST'></TMPL_IF></div>
-		    <div id="sfx_aulast"><TMPL_IF AULAST><TMPL_VAR NAME='AULAST'></TMPL_IF></div>
-			<div id="sfx_btitle"><TMPL_IF BTITLE><TMPL_VAR NAME='BTITLE'></TMPL_IF></div>
-			    <div id="sfx_day"><TMPL_IF DAY><TMPL_VAR NAME='DAY'></TMPL_IF></div>
-				<div id="sfx_epage"><TMPL_IF EPAGE><TMPL_VAR NAME='EPAGE'></TMPL_IF></div>
-				    <div id="sfx_issn"><TMPL_IF ISSN><TMPL_VAR NAME='ISSN'></TMPL_IF></div>
-					<div id="sfx_isbn"><TMPL_IF ISBN><TMPL_VAR NAME='ISBN'></TMPL_IF></div>
-					    <div id="sfx_issue"><TMPL_IF ISSUE><TMPL_VAR NAME='ISSUE'></TMPL_IF></div>
-						<div id="sfx_month"><TMPL_IF MONTH><TMPL_VAR NAME='MONTH'></TMPL_IF></div>
-						    <div id="sfx_openurl"><TMPL_IF OPENURL><TMPL_VAR NAME='OPENURL'></TMPL_IF></div>
-							<div id="sfx_spage"><TMPL_IF SPAGE><TMPL_VAR NAME='SPAGE'></TMPL_IF></div>
-							    <div id="sfx_title"><TMPL_IF TITLE><TMPL_VAR NAME='TITLE'></TMPL_IF></div>
-								<div id="sfx_volume"><TMPL_IF VOLUME><TMPL_VAR NAME='VOLUME'></TMPL_IF></div>
-								    <div id="sfx_year"><TMPL_IF YEAR><TMPL_VAR NAME='YEAR'></TMPL_IF></div>
+	    <div id="sfx_aufirst"><TMPL_IF AUFIRST><TMPL_VAR NAME='AUFIRST'></TMPL_IF></div>
+	    <div id="sfx_aulast"><TMPL_IF AULAST><TMPL_VAR NAME='AULAST'></TMPL_IF></div>
+	    <div id="sfx_btitle"><TMPL_IF BTITLE><TMPL_VAR NAME='BTITLE'></TMPL_IF></div>
+	    <div id="sfx_day"><TMPL_IF DAY><TMPL_VAR NAME='DAY'></TMPL_IF></div>
+	    <div id="sfx_epage"><TMPL_IF EPAGE><TMPL_VAR NAME='EPAGE'></TMPL_IF></div>
+	    <div id="sfx_issn"><TMPL_IF ISSN><TMPL_VAR NAME='ISSN'></TMPL_IF></div>
+	    <div id="sfx_isbn"><TMPL_IF ISBN><TMPL_VAR NAME='ISBN'></TMPL_IF></div>
+	    <div id="sfx_issue"><TMPL_IF ISSUE><TMPL_VAR NAME='ISSUE'></TMPL_IF></div>
+	    <div id="sfx_month"><TMPL_IF MONTH><TMPL_VAR NAME='MONTH'></TMPL_IF></div>
+	    <div id="sfx_openurl"><TMPL_IF OPENURL><TMPL_VAR NAME='OPENURL'></TMPL_IF></div>
+	    <div id="sfx_spage"><TMPL_IF SPAGE><TMPL_VAR NAME='SPAGE'></TMPL_IF></div>
+	    <div id="sfx_title"><TMPL_IF TITLE><TMPL_VAR NAME='TITLE'></TMPL_IF></div>
+	    <div id="sfx_volume"><TMPL_IF VOLUME><TMPL_VAR NAME='VOLUME'></TMPL_IF></div>
+	    <div id="sfx_year"><TMPL_IF YEAR><TMPL_VAR NAME='YEAR'></TMPL_IF></div>
 	</div>
 
 
