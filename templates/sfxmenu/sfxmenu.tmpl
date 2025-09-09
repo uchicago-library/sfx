@@ -739,22 +739,17 @@
 	     ]
 	 };
 
-	 function clean_up_issn(issnstring) {
-	     var output = issnstring.replace('-', '');
-	     return output
-	 };
-
-	 function determine_url(issn, year, ags_url, fallback_url) {
+	 function present_in_ags(issn, year) {
+	     function clean_up_issn(issnstring) {
+		 var output = issnstring.replace('-', '');
+		 return output
+	     };
 	     var year_range = issn_lookup[clean_up_issn(issn)];
 	     if (year_range) {
-		 if (year >= year_range[0] && year <= year_range[1]) {
-		     return ags_url;
-		 } else {
-		     return fallback_url
-		 }
+		 return year >= year_range[0] && year <= year_range[1];
 	     } else {
-		 return fallback_url;
-	     };
+		 return false;
+	     }
 	 };
 
 	 (function($) {
@@ -2232,10 +2227,38 @@
 		     }
 		 }
 
-		 var base_url = 'https://www.reprintsdesk.com/landing/scholar.aspx?';
-		 var url = base_url + param_arr.join('&');
-		 /* self.attr('href', url); */
-		 self.attr('href', determine_url(issn, get_year(params), "google.com", "archlinux.org"));
+		 /* var base_url = 'https://www.reprintsdesk.com/landing/scholar.aspx?';
+		    var url = base_url + param_arr.join('&');
+		    self.attr('href', url); */
+
+		 function determine_text(issn, year, param_arr) {
+		     var illiad_base_url = 'https://requests.lib.uchicago.edu/illiad/illiad.dll/openurl?';
+		     var ags_base_url = 'https://www.reprintsdesk.com/landing/scholar.aspx?';
+		     if (present_in_ags(issn, year)) {
+			 var l = ags_base_url + param_arr.join('&');
+			 var pdf = '<i class="fa fa-file-pdf-o fa-flip-horizontal" aria-hidden="true"></i>';
+			 var t = pdf + "&nbsp;Request and check for instant access";
+			 var d = "Many articles are available immediately, most are delivered within 24 hours";
+			 return [l, t, d];
+		     } else {
+			 var l = illiad_base_url + param_arr.join('&');
+			 var truck = '<i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i>';
+			 var t = truck + "&nbsp;Request from another library";
+			 var d = "Many articles are available within 24 hours, most are delivered within 48 hours. <br><small>Loans typically arrive in 2-8 days.</small>"
+			 return [l, t, d];
+		     };
+		 };
+
+		 function update_text(url, link_text, desc_text) {
+		     self.attr('href', url);
+		     document.getElementById("otherlibrarieslink").innerHTML = link_text;
+		     document.getElementById("ill_text").innerHTML = desc_text;
+		 };
+
+		 var [url, link_text, desc_text] = determine_text(issn, get_year(params), param_arr);
+
+		 update_text(url, link_text, desc_text);
+		 
 	     }
 
 	     $(document).ready(function() {
@@ -2350,7 +2373,7 @@
 		<div id="e-links" class="holdings-unit">
 		    <a id="otherlibrarieslink" href="#" class="text-getit service" data-openurl="<TMPL_VAR NAME='OPENURL'>" data-ga-category="other-libraries" data-ga-action="click" data-ga-label="Request via Interlibrary Loan"><i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i> Request via Interlibrary Loan</a>
 		    
-		    <small>Interlibrary Loan now includes the UBorrow and BorrowDirect delivery services</small>
+		    <small id="ill_text">Interlibrary Loan now includes the UBorrow and BorrowDirect delivery services</small>
 		</div>
 	    </div>
 	</div>
