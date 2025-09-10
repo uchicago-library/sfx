@@ -45,6 +45,7 @@
 
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 	<script src="https://sfx.lib.uchicago.edu/sfx_local/js/sfxmenu/jquery.track-everything.2.js"></script>
+	<script src="https://sfx.lib.uchicago.edu/sfx_local/js/sfxmenu/ags.js"></script>
 
 	<script type="text/javascript">
 
@@ -2229,7 +2230,7 @@
 
 		 /* var base_url = 'https://www.reprintsdesk.com/landing/scholar.aspx?';
 		    var url = base_url + param_arr.join('&');
-		    self.attr('href', url); */
+		    self.attr('href', "hi"); */
 
 		 function determine_text(issn, year, param_arr) {
 		     var illiad_base_url = 'https://requests.lib.uchicago.edu/illiad/illiad.dll/openurl?';
@@ -2239,25 +2240,28 @@
 			 var pdf = '<i class="fa fa-file-pdf-o fa-flip-horizontal" aria-hidden="true"></i>';
 			 var t = pdf + "&nbsp;Request and check for instant access";
 			 var d = "Many articles are available immediately, most are delivered within 24 hours";
-			 return [l, t, d];
+			 var b = "Request";
+			 return [l, t, d, b];
 		     } else {
 			 var l = illiad_base_url + param_arr.join('&');
 			 var truck = '<i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i>';
 			 var t = truck + "&nbsp;Request from another library";
 			 var d = "Many articles are available within 24 hours, most are delivered within 48 hours. <br><small>Loans typically arrive in 2-8 days.</small>"
-			 return [l, t, d];
+			 var b = "Other Libraries";
+			 return [l, t, d, b];
 		     };
 		 };
 
-		 function update_text(url, link_text, desc_text) {
+		 function update_text(url, link_text, desc_text, box_name) {
 		     self.attr('href', url);
 		     document.getElementById("otherlibrarieslink").innerHTML = link_text;
 		     document.getElementById("ill_text").innerHTML = desc_text;
+		     document.getElementById("ill_box_name").innerHTML = box_name;
 		 };
 
-		 var [url, link_text, desc_text] = determine_text(issn, get_year(params), param_arr);
+		 var [url, link_text, desc_text, box_name] = determine_text(issn, get_year(params), param_arr);
 
-		 update_text(url, link_text, desc_text);
+		 update_text(url, link_text, desc_text, box_name);
 		 
 	     }
 
@@ -2369,7 +2373,7 @@
 	    <!-- In the Library -->
 	    <div class="holdings-locpanel" id="gotitsection" data-openurl="<TMPL_VAR NAME='OPENURL'>"></div>
 	    <div class="holdings-locpanel">
-		<div class="locpanel-heading getit"><h2>Other Libraries</h2></div>
+		<div class="locpanel-heading getit"><h2 id="ill_box_name">Other Libraries</h2></div>
 		<div id="e-links" class="holdings-unit">
 		    <a id="otherlibrarieslink" href="#" class="text-getit service" data-openurl="<TMPL_VAR NAME='OPENURL'>" data-ga-category="other-libraries" data-ga-action="click" data-ga-label="Request via Interlibrary Loan"><i class="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i> Request via Interlibrary Loan</a>
 		    
