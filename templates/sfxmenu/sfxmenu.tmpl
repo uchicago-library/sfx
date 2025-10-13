@@ -757,7 +757,13 @@
 			};
 
 			(function ($) {
-				var debug = false;
+				var debug = true;
+
+				var q = 'https://restful.lib.uchicago.edu/cgi-bin/subnetclass?jsoncallback=?';
+				$.getJSON(q, function (data) {
+					// gtag('event', 'Subnetclass_dimension', { 'Subnetclass': 12 });
+					console.log('Subnetclass: ' + data.subnetclass);
+				});
 
 				var contains = function (needle) {
 					// Per spec, the way to identify NaN is that it is not equal to itself
@@ -2306,20 +2312,6 @@
 					$('#reportaproblem').attr('href', url);
 				});
 
-				$(document).on('ajaxStop.ga', function () {
-					if ($('a.navbar-brand').attr('data-ga-tracked') == 'on') {
-						$(document).off('ajaxStop.ga');
-						return;
-					}
-					var q = 'https://restful.lib.uchicago.edu/cgi-bin/subnetclass?jsoncallback=?';
-					$.getJSON(q, function (data) {
-						gtag('event', 'Subnetclass_dimension', { 'Subnetclass': 12 });
-					});
-
-					if (typeof $('body').track === 'function') {
-						$('body').track();
-					}
-				});
 			})(jQuery);
 		</script>
 
