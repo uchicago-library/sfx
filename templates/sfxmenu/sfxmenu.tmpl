@@ -1057,8 +1057,8 @@
 
 				function get_issn(params) {
 					var issn = $('#sfx_issn').text();
-					if (issn) {
-						return issn;
+					if (issn.trim()) {
+						return issn.trim();
 					} else {
 						return '';
 					}
