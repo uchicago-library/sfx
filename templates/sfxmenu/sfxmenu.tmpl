@@ -743,18 +743,19 @@
 				]
 			};
 
+			function clean_up_issn(issnstring) {
+			    var output = issnstring.replace('-', '');
+			    return output.trim()
+			}
+
 			function present_in_ags(issn, year) {
-				function clean_up_issn(issnstring) {
-					var output = issnstring.replace('-', '');
-					return output
-				};
-				var year_range = issn_lookup[clean_up_issn(issn)];
-				if (year_range) {
-					return year >= year_range[0] && year <= year_range[1];
-				} else {
-					return false;
-				}
-			};
+			    var year_range = issn_lookup[clean_up_issn(issn)];
+			    if (year_range) {
+				    return year >= year_range[0] && year <= year_range[1];
+			    } else {
+				    return false;
+			    }
+			}
 
 			(function ($) {
 				var debug = false;
@@ -2262,14 +2263,15 @@
 						};
 					};
 
+				        var year = Number(get_year(params).trim());
+				        var [url, link_text, desc_text, box_name] = determine_text(issn, year, param_arr);
+
 					function update_text(url, link_text, desc_text, box_name) {
 						self.attr('href', url);
 						document.getElementById("otherlibrarieslink").innerHTML = link_text;
 						document.getElementById("ill_text").innerHTML = desc_text;
 						document.getElementById("ill_box_name").innerHTML = box_name;
 					};
-
-					var [url, link_text, desc_text, box_name] = determine_text(issn, get_year(params), param_arr);
 
 					update_text(url, link_text, desc_text, box_name);
 
