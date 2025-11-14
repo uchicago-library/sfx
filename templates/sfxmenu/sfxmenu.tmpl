@@ -842,11 +842,11 @@
 							return params[check[i]];
 						}
 					}
-					var btitle = $('#sfx_btitle').text();
+					var btitle = $('#sfx_btitle').text().trim();
 					if (btitle) {
 						return btitle;
 					}
-					var title = $('#sfx_title').text();
+					var title = $('#sfx_title').text().trim();
 					if (title) {
 						return title;
 					}
@@ -869,7 +869,7 @@
 								return params[check[i]];
 							}
 						}
-						var title = $('#sfx_title').text();
+						var title = $('#sfx_title').text().trim();
 						if (title) {
 							return title;
 						} else {
@@ -894,7 +894,7 @@
 							return params[check[i]];
 						}
 					}
-					var atitle = $('#sfx_atitle').text();
+					var atitle = $('#sfx_atitle').text().trim();
 					if (atitle) {
 						return atitle;
 					}
@@ -919,7 +919,7 @@
 				*/
 
 				function get_aufirst(params) {
-					var aufirst = $('#sfx_aufirst').text();
+					var aufirst = $('#sfx_aufirst').text().trim();
 					if (aufirst) {
 						return aufirst;
 					}
@@ -940,7 +940,7 @@
 				*/
 
 				function get_aulast(params) {
-					var aulast = $('#sfx_aulast').text();
+					var aulast = $('#sfx_aulast').text().trim();
 					if (aulast) {
 						return aulast;
 					}
@@ -958,7 +958,7 @@
 				// mostly for articles, rather than books
 
 				function get_au(params) {
-					var au = $('#sfx_au').text();
+					var au = $('#sfx_au').text().trim();
 					if (au) {
 						return au;
 					} else {
@@ -1008,8 +1008,8 @@
 
 					var rfr_id = params['rfr_id'];
 
-					var atitle = $('#sfx_atitle').text();
-					var btitle = $('#sfx_btitle').text();
+					var atitle = $('#sfx_atitle').text().trim();
+					var btitle = $('#sfx_btitle').text().trim();
 					var issn = get_issn(params);
 					if (btitle) {
 						return 'book';
@@ -1036,14 +1036,14 @@
 					if ('isbn' in params && params['isbn']) {
 						isbn = params['isbn'];
 					}
-					var params = parse_query_string($('#sfx_openurl').text().replace(/^[^?]*\?/, ''));
+					var params = parse_query_string($('#sfx_openurl').text().trim().replace(/^[^?]*\?/, ''));
 					if (params['rft.isbn']) {
 						isbn = params['rft.isbn'];
 					}
 					if (isbn.match(/^[X0-9-]+$/)) {
 						return isbn;
 					} else {
-						var isbns = $('#sfx_isbn').text().split(';');
+						var isbns = $('#sfx_isbn').text().trim().split(';');
 						if (isbns.length > 0) {
 							return isbns[0].trim();
 						}
@@ -1056,9 +1056,9 @@
 				*/
 
 				function get_issn(params) {
-					var issn = $('#sfx_issn').text();
-					if (issn.trim()) {
-						return issn.trim();
+					var issn = $('#sfx_issn').text().trim();
+					if (issn) {
+						return issn;
 					} else {
 						return '';
 					}
@@ -1092,7 +1092,7 @@
 				*/
 
 				function get_volume(params) {
-					var volume = $('#sfx_volume').text();
+					var volume = $('#sfx_volume').text().trim();
 					if (volume) {
 						return volume;
 					} else {
@@ -1106,7 +1106,7 @@
 				*/
 
 				function get_issue(params) {
-					var issue = $('#sfx_issue').text();
+					var issue = $('#sfx_issue').text().trim();
 					if (issue) {
 						return issue;
 					} else {
@@ -1121,7 +1121,7 @@
 
 				function get_month(params) {
 					var month_array = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-					var month_index = $('#sfx_month').text();
+					var month_index = $('#sfx_month').text().trim();
 					if (month_index) {
 						return month_array[parseInt(month_index) - 1];
 					}
@@ -1134,7 +1134,7 @@
 				*/
 
 				function get_spage() {
-					var spage = $('#sfx_spage').text();
+					var spage = $('#sfx_spage').text().trim();
 					if (spage) {
 						return spage;
 					} else {
@@ -1148,7 +1148,7 @@
 				*/
 
 				function get_epage() {
-					var epage = $('#sfx_epage').text();
+					var epage = $('#sfx_epage').text().trim();
 					if (epage) {
 						return epage;
 					} else {
@@ -1180,7 +1180,7 @@
 					if (matches && matches.length > 0) {
 						return matches[1];
 					} else {
-						var year = $('#sfx_year').text();
+						var year = $('#sfx_year').text().trim();
 						if (year) {
 							return year;
 						} else {
@@ -1237,12 +1237,12 @@
 							date = month;
 						}
 
-						var day = $('#sfx_day').text();
+						var day = $('#sfx_day').text().trim();
 						if (day) {
 							date = date + ' ' + day;
 						}
 
-						var year = $('#sfx_year').text();
+						var year = $('#sfx_year').text().trim();
 						if (year) {
 							if (date) {
 								date = date + ', ';
@@ -1578,13 +1578,15 @@
 
 				$.fn.titlesection = function () {
 					var self = this;
-
 					var params = parse_query_string(
 						self.data('openurl').replace(/^[^?]*\?/, '')
 					);
 
 					var genre = get_genre(params);
 					var output = [];
+
+				        /* debugging */
+				        self.append (JSON.stringify (get_genre(params)));
 
 					/* depending on the genre of the item in question, we display the title
 					* section of the page differently. Items like journal articles have
@@ -1646,14 +1648,19 @@
 						if (citation) {
 							output.push(citation);
 						}
+					} else { 
+					    var title = get_title(params);
+					    if (title) {
+						self.append('<h1>' + title + '</h1>');
+					    }
 
-						// var doi = get_doi_for_idresolve(params);
-						// if (doi) {
-						// 	 output.push(doi);
-						// }
+					    var author = get_author(params);
+					    if (author) {
+						self.append('<h2>' + author + '</h2>');
+					    }
 					}
 
-					if (get_citation(params) == '') {
+				    if (get_citation(params) == '') {
 						var date = get_date(params);
 						if (date) {
 							output.push('(' + date + ')');
@@ -1679,9 +1686,6 @@
 						self.append('<p>' + output.join(' ') + '</p>');
 					}
 				}
-
-
-
 
 				$.fn.holdingssectionNew = function () {
 					var self = this;
@@ -1722,6 +1726,7 @@
 					} else {
 						var url = 'https://restful.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&callback=?';
 					}
+
 					// raw URL
 					var unescaped_openurl = document.URL;
 					// URL escaped in a manner suitable for the RESTful service
@@ -1733,6 +1738,7 @@
 						url: url,
 						success: function (data) {
 							// raw URL
+
 							var unescaped_openurl = document.URL;
 							// URL escaped in a manner suitable for the RESTful service
 							var openurl = encodeURIComponent(unescaped_openurl);
@@ -1758,9 +1764,9 @@
 							}
 							console.log(genre);
 							if (available) {
-								self.find('.e-links').append('<div class="alert alert-success-match" role="alert">Available</div></div>');
-								// deduped links.
-								var title = data['title'];
+							self.find('.e-links').append('<div class="alert alert-success-match" role="alert">Available</div></div>');
+							    // deduped links.
+							    var title = data['title'];
 								for (var i = 0; i < data['deduped'].length; i++) {
 									var coverageString = get_coverage_string(data['deduped'][i]['coverage']);
 									if (data['deduped'][i]['note']) {
@@ -1831,8 +1837,6 @@
 											xhr.withCredentials = true;
 										},
 										success: function (data, textStatus, request) {
-											/* var return_params = parse_query_string(data.text().replace(/^[^?]*\?/, ''));*/
-											/* var rat = get_issn(return_params);*/
 											var stuff = data.split("?")[1];
 											var return_params = parse_query_string(stuff);
 											var return_issn = return_params['issn'];
@@ -2170,7 +2174,7 @@
 					}) */
 					var self = this;
 
-					var openurl = $('#sfx_openurl').text();
+					var openurl = $('#sfx_openurl').text().trim();
 					var openurl_query_string = openurl.replace(/^[^?]*\?/, '');
 					var params = parse_query_string(openurl_query_string);
 
@@ -2188,7 +2192,7 @@
 						genre = 'article';
 					}
 
-					var the_author = $('#sfx_au').text();
+					var the_author = $('#sfx_au').text().trim();
 
 					var requests_params = {
 						'genre': genre,
@@ -2278,7 +2282,7 @@
 				}
 
 				$(document).ready(function () {
-					var params = parse_query_string($('#sfx_openurl').text().replace(/^[^?]*\?/, ''));
+					var params = parse_query_string($('#sfx_openurl').text().trim().replace(/^[^?]*\?/, ''));
 
 					/* var url = 'https://sfx.lib.uchicago.edu/sfx_test/cgi/public/feedback.cgi?em=askeresources%40uchicago.libanswers.com';*/
 					/* change to this when in production*/
@@ -2309,8 +2313,7 @@
 						url = url + '&issn=' + encodeURIComponent(issn);
 					}
 
-					url = url + '&openurl=' + encodeURIComponent($('#sfx_openurl').text());
-					// url = url + '&' + $('#sfx_openurl').text().replace(/^[^?]*\?/, '');
+					url = url + '&openurl=' + encodeURIComponent($('#sfx_openurl').text().trim());
 					$('#reportaproblem').attr('href', url);
 				});
 
