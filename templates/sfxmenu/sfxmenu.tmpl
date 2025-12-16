@@ -2127,7 +2127,8 @@
 													var text = data['result'][i]['eholding'][j]['text'];
 												}
 												// updated for Open Athens December 2025
-												elinks.append('<div><a href="https://proxy-redirector.lib.uchicago.edu/login?url=' + href + '"data-ga-label="Online Access">' + text + '</a></div>');
+											        var encoded = encodeURIComponent(href);
+												elinks.append('<div><a href="https://proxy-redirector.lib.uchicago.edu/login?url=' + encoded + '"data-ga-label="Online Access">' + text + '</a></div>');
 											}
 										}
 									} else {
