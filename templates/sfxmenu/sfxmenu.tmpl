@@ -1701,6 +1701,7 @@
 		     // MT
 
 		     var openURL = self.data('openurl');
+		     var openURL_encoded = encodeURIComponent (openURL);
 
 		     var titleNA = '<div class="locpanel-heading online"><h2>Online</h2></div><div class="e-links holdings-unit"><div class="alert alert-no-match">Not available.</div></div>';
 
@@ -1717,7 +1718,7 @@
 		      */
 
 		     if (genre == 'article') {
-			 var url = 'https://restful02.lib.uchicago.edu/cgi-bin/articlelink?openurl=https://sfx.lib.uchicago.edu/sfx_local?ID=doi:10.1353%252Fphl.2006.0035%26genre=article%26atitle=The%2520Germ%2520of%2520a%2520Sense%26title=Philosophy%2520and%2520Literature%26issn=01900013%26volume=%26issue=2%26date=20061001%26au=Teichman%252C%2520Matthew%26spage=567%26pages=567-579%26sid=EBSCO:MLA%2520International%2520Bibliography:2007790911&callback=?';
+			 var url = 'https://restful02.lib.uchicago.edu/cgi-bin/articlelink?openurl=' + openURL_encoded + '&callback=?';
 		     }
 		     else if (issn) {
 			 var url = 'https://restful.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&issns=' + issn + '&callback=?';
@@ -1739,9 +1740,8 @@
 			 success: function (data) {
 			     // raw URL
 			     if (genre == 'article') {
-				 var stuff = JSON.stringify (data);
 				 self.append (titleA);
-				 /* self.append (stuff); */
+				 /* 				 self.append (openURL); */
 				 var available = true;
 				 var provider = data['hits'][0]['provider'];
 				 var link = data['hits'][0]['link']
