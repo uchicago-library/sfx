@@ -1733,6 +1733,23 @@
 		     // URL escaped in a manner suitable for the RESTful service
 		     var openurl = encodeURIComponent(unescaped_openurl);
 
+		     function displayMainLink (json) {
+			 var provider = json['hits'][0]['provider'];
+			 var link = json['hits'][0]['link'];
+			 self.find('.e-links').append('<div class="alert alert-success-match" role="alert">Available</div></div>');
+			 self.find('.e-links').append('<div class="row"><div class="result-title"><a class="holdingslink" href="' + link + '">' + provider + ' <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></div></div>');
+		     }
+
+		     function displayOptionalLinks (json) {
+			 self.find('.e-links').append('<div class="row e-list-wrapper"><ul aria-label="Accordion Control for e-resources"><li><input type="checkbox" id="e-list" aria-expanded="false" data-ga-label="View all available e-resources for this title"/><label for="e-list"> View all available e-resources for this title</label><ul class="all-available-elinks"></ul></li></ul></div>');
+			 // complete links.
+			 for (var i = 0; i < json['hits'].reverse().slice(-1).length; i++) {
+			     var provider = json['hits'][i]['provider'];
+			     var link = json['hits'][i]['link'];
+			     self.find('.all-available-elinks').append('<li><a href="' + link + '" class="holdingslink elink external" data-ga-label="Online Access">' + provider + '</a></li>');
+			 }
+		     }
+
 		     $.ajax({
 			 cache: true,
 			 dataType: 'json',
@@ -1741,16 +1758,14 @@
 			     // raw URL
 			     if (genre == 'article') {
 				 self.append (titleA);
-				 /* 				 self.append (openURL); */
-				 var available = true;
-				 var provider = data['hits'][0]['provider'];
-				 var link = data['hits'][0]['link']
-				 self.find('.e-links').append('<div class="alert alert-success-match" role="alert">Available</div></div>');
-				 self.find('.e-links').append('<div class="row"><div class="result-title"><a class="holdingslink" href="' + link + '">' + provider + ' <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></div></div>');
-				 self.find('.e-links').append('<div class="row e-list-wrapper"><ul aria-label="Accordion Control for e-resources"><li><input type="checkbox" id="e-list" aria-expanded="false" data-ga-label="View all available e-resources for this title"/><label for="e-list"> View all available e-resources for this title</label><ul class="all-available-elinks"></ul></li></ul></div>');
-				 // complete links.
-				 for (var i = 0; i < data['hits'].reverse().slice(-1).length; i++) {
-				     self.find('.all-available-elinks').append('<li><a href="' + data['hits'][i]['link'] + '" class="holdingslink elink external" data-ga-label="Online Access">' + data['hits'][i]['provider'] + '</a></li>');
+				 var hits = data ['hits'];
+				 if (hits.length == 0) {
+				     self.find('.e-links').append('<div class="alert alert-no-match" role="alert">Not available.</div>');
+				 } else if (hits.length == 1) {
+				     displayMainLink(data);
+				 } else {
+				     displayMainLink(data);
+				     displayOptionalLinks(data);
 				 }
 			     } else {
 				 // "Online" header.
