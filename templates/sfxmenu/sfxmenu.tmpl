@@ -1483,25 +1483,6 @@
 		  * output: form to submit (a jQuery element)
 		  */
 
-
-		 /* function get_sfx_form(link_text) {
-		    var form = null;
-		    $('#sfxforms a').each(function () {
-		    var sfx_link = $(this);
-		    var sfx_link_text = sfx_link.text().replace(/^\s+|\s+$/g, '');
-		    if (sfx_link_text == link_text) {
-		    var params = sfx_link.attr('href').replace(/^.*\(|\).*$/g, '').split(',');
-		    var formname = params[1].replace(/['"]/g, '');
-		    form = $('form[name="' + formname + '"]');
-		    }
-		    });
-		    if (form !== null) {
-		    return form;
-		    } else {
-		    return $([]);
-		    }
-		    }
-		  */
 		 /* Helper function for get_coverage_string.
 		  */
 
@@ -1778,13 +1759,6 @@
 				     if (data['deduped']) {
 					 available = true;
 				     }
-				     /* for (var i = 0; i < data['deduped'].length; i++) {
-					var name = data['deduped'][i]['name'];
-					var f = get_sfx_form(name);
-					if ($(f).length > 0) {
-					    available = true;
-					}
-					} */
 				 } else {
 				     available = (data['deduped'].length > 0 && data['complete'].length > 0);
 				 }
@@ -1808,11 +1782,6 @@
 					 if (data['deduped'].length > 0) {
 					     self.find('.e-links').append('<div class="row"><div class="result-title"><a class="holdingslink" href="' + url + '" data-ga-label="Call Number">' + name + ' <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></div>' + coverageString + '</div>');
 					 }
-
-					 /* var f = get_sfx_form(name);
-					    if ($(f).length > 0) {
-					    self.find('.e-links').append('<div class="row"><div class="result-title"><a class="holdingslink" href="' + url + '" data-ga-label="Call Number">' + name + ' <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></div>' + coverageString + '</div>');
-					    } */
 				     }
 				     self.find('.e-links').append('<div class="row e-list-wrapper"><ul aria-label="Accordion Control for e-resources"><li><input type="checkbox" id="e-list" aria-expanded="false" data-ga-label="View all available e-resources for this title"/><label for="e-list"> View all available e-resources for this title</label><ul class="all-available-elinks"></ul></li></ul></div>');
 
@@ -1930,18 +1899,6 @@
 				     idresolveExpansion(openAccessQuery);
 
 				 }
-
-				 /* $('a.holdingslink').click(function (e) {
-				    var holdingslink = $(this);
-				    var holdingstext = holdingslink.text().replace(/^\s+|\s+$/g, '');
-				    var f = get_sfx_form(holdingstext);
-				    alert (JSON.stringify (f));
-				    if ($(f).length > 0) {
-				    e.preventDefault();
-				    $(f).attr('target', '_self');
-				    $(f).submit();
-				    }
-				    }); */
 			     }
 			 }
 		     });
