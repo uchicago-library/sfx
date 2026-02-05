@@ -760,12 +760,6 @@
 	     (function ($) {
 		 var debug = false;
 
-		 var q = 'https://restful.lib.uchicago.edu/cgi-bin/subnetclass?jsoncallback=?';
-		 $.getJSON(q, function (data) {
-		     // gtag('event', 'Subnetclass_dimension', { 'Subnetclass': 12 });
-		     console.log('Subnetclass: ' + data.subnetclass);
-		 });
-
 		 var contains = function (needle) {
 		     // Per spec, the way to identify NaN is that it is not equal to itself
 		     var findNaN = needle !== needle;
@@ -1563,7 +1557,6 @@
 		     var params = parse_query_string(
 			 self.data('openurl').replace(/^[^?]*\?/, '')
 		     );
-
 		     var genre = get_genre(params);
 		     var output = [];
 
@@ -1721,9 +1714,10 @@
 		     var displayOptionalLinks = function (json) {
 			 self.find('.e-links').append('<div class="row e-list-wrapper"><ul aria-label="Accordion Control for e-resources"><li><input type="checkbox" id="e-list" aria-expanded="false" data-ga-label="View all available e-resources for this title"/><label for="e-list"> View all available e-resources for this title</label><ul class="all-available-elinks"></ul></li></ul></div>');
 			 // complete links.
-			 for (var i = 0; i < json['hits'].reverse().slice(-1).length; i++) {
-			     var provider = json['hits'][i]['provider'];
-			     var link = json['hits'][i]['link'];
+			 var extra_hits = json['hits'].slice(1, json['hits'].length);
+			 for (var i = 0; i < extra_hits.length; i++) {
+			     var provider = extra_hits[i]['provider'];
+			     var link = extra_hits[i]['link'];
 			     self.find('.all-available-elinks').append('<li><a href="' + link + '" class="holdingslink elink external" data-ga-label="Online Access">' + provider + '</a></li>');
 			 }
 		     }
