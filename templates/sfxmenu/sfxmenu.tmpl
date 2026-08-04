@@ -1508,12 +1508,6 @@
 			(function ($) {
 				var debug = false;
 
-				var q = 'https://restful.lib.uchicago.edu/cgi-bin/subnetclass?jsoncallback=?';
-				$.getJSON(q, function (data) {
-					// gtag('event', 'Subnetclass_dimension', { 'Subnetclass': 12 });
-					console.log('Subnetclass: ' + data.subnetclass);
-				});
-
 				var contains = function (needle) {
 					// Per spec, the way to identify NaN is that it is not equal to itself
 					var findNaN = needle !== needle;
@@ -2231,24 +2225,6 @@
 				* output: form to submit (a jQuery element)
 				*/
 
-				function get_sfx_form(link_text) {
-					var form = null;
-					$('#sfxforms a').each(function () {
-						var sfx_link = $(this);
-						var sfx_link_text = sfx_link.text().replace(/^\s+|\s+$/g, '');
-						if (sfx_link_text == link_text) {
-							var params = sfx_link.attr('href').replace(/^.*\(|\).*$/g, '').split(',');
-							var formname = params[1].replace(/['"]/g, '');
-							form = $('form[name="' + formname + '"]');
-						}
-					});
-					if (form !== null) {
-						return form;
-					} else {
-						return $([]);
-					}
-				}
-
 				/* Helper function for get_coverage_string.
 				*/
 
@@ -2329,7 +2305,6 @@
 					var params = parse_query_string(
 						self.data('openurl').replace(/^[^?]*\?/, '')
 					);
-
 					var genre = get_genre(params);
 					var output = [];
 
@@ -2448,7 +2423,9 @@
 
 					// MT
 
+		     // openurl, for use with articlelink REST API
 					var openURL = self.data('openurl');
+		     var openURL_encoded = encodeURIComponent(openURL);
 
 					var titleNA = '<div class="locpanel-heading online"><h2>Online</h2></div><div class="e-links holdings-unit"><div class="alert alert-no-match">Not available.</div></div>';
 
@@ -2464,7 +2441,10 @@
 					* service.
 					*/
 
-					if (issn) {
+		     if (genre == 'article') {
+			 var url = 'https://restful.lib.uchicago.edu/cgi-bin/articlelink?openurl=' + openURL_encoded + '&callback=?';
+		     }
+		     else if (issn) {
 						var url = 'https://restful.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&issns=' + issn + '&callback=?';
 					} else if (has_sfx_id) {
 						var url = 'https://restful.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&sfx=' + object_id + '&callback=?';
@@ -2472,10 +2452,23 @@
 						var url = 'https://restful.lib.uchicago.edu/cgi-bin/holdings?code=48976&function=holdings&callback=?';
 					}
 
-					// raw URL
-					var unescaped_openurl = document.URL;
-					// URL escaped in a manner suitable for the RESTful service
-					var openurl = encodeURIComponent(unescaped_openurl);
+		     var displayMainLink = function (json) {
+			 var provider = json['hits'][0]['provider'];
+			 var link = json['hits'][0]['link'];
+			 self.find('.e-links').append('<div class="alert alert-success-match" role="alert">Available</div></div>');
+			 self.find('.e-links').append('<div class="row"><div class="result-title"><a class="holdingslink" href="' + link + '">' + provider + ' <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></div></div>');
+		     }
+
+		     var displayOptionalLinks = function (json) {
+			 self.find('.e-links').append('<div class="row e-list-wrapper"><ul aria-label="Accordion Control for e-resources"><li><input type="checkbox" id="e-list" aria-expanded="false" data-ga-label="View all available e-resources for this title"/><label for="e-list"> View all available e-resources for this title</label><ul class="all-available-elinks"></ul></li></ul></div>');
+			 // complete links.
+			 var extra_hits = json['hits'].slice(1, json['hits'].length);
+			 for (var i = 0; i < extra_hits.length; i++) {
+			     var provider = extra_hits[i]['provider'];
+			     var link = extra_hits[i]['link'];
+			     self.find('.all-available-elinks').append('<li><a href="' + link + '" class="holdingslink elink external" data-ga-label="Online Access">' + provider + '</a></li>');
+			 }
+		     }
 
 					$.ajax({
 						cache: true,
@@ -2483,10 +2476,18 @@
 						url: url,
 						success: function (data) {
 							// raw URL
-
-							var unescaped_openurl = document.URL;
-							// URL escaped in a manner suitable for the RESTful service
-							var openurl = encodeURIComponent(unescaped_openurl);
+			     if (genre == 'article') {
+				 self.append (titleA);
+				 var hits = data ['hits'];
+				 if (hits.length == 0) {
+				     self.find('.e-links').append('<div class="alert alert-no-match" role="alert">Not available.</div>');
+				 } else if (hits.length == 1) {
+				     displayMainLink(data);
+				 } else {
+				     displayMainLink(data);
+				     displayOptionalLinks(data);
+				 }
+			     } else {
 							// "Online" header.
 							self.append(titleA);
 
@@ -2497,13 +2498,9 @@
 
 							var available = false;
 							if (genre == 'article') {
-								for (var i = 0; i < data['deduped'].length; i++) {
-									var name = data['deduped'][i]['name'];
-									var f = get_sfx_form(name);
-									if ($(f).length > 0) {
+				     if (data['deduped']) {
 										available = true;
 									}
-								}
 							} else {
 								available = (data['deduped'].length > 0 && data['complete'].length > 0);
 							}
@@ -2523,8 +2520,8 @@
 									}
 									var url = data['deduped'][i]['url'];
 									var name = data['deduped'][i]['name'];
-									var f = get_sfx_form(name);
-									if ($(f).length > 0) {
+
+					 if (data['deduped'].length > 0) {
 										self.find('.e-links').append('<div class="row"><div class="result-title"><a class="holdingslink" href="' + url + '" data-ga-label="Call Number">' + name + ' <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a></div>' + coverageString + '</div>');
 									}
 								}
@@ -2558,6 +2555,19 @@
 											'<div class="alert alert-no-match" role="alert">Not available.</div>'
 										);
 								};
+				     // display entry for a single open access source
+				     var openAccessHTML = function (link, provider, providerLink) {
+					 var pdfDiv = ('<div class="row"><div class="result-title"><a class="holdingslink" href="' + link + '" data-ga-label="Available as Open Access"> Available as Open Access <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a><br>');
+					 var providerDiv = function () {
+					     if (providerLink && provider) {
+						 return '<small>Located via <a href="' + providerLink + '">' + provider + '</a> and <a href="https://openaccessbutton.org/">Open Access Button</a></small></div></div>';
+					     } else {
+						 return '';
+					     }
+					 };
+					 return (pdfDiv + providerDiv());
+				     };
+
 
 								var idresolveQuery = function (idresolve_url, nextAjaxCall) {
 									$.ajax({
@@ -2611,20 +2621,27 @@
 									}
 								};
 
-								idresolveExpansion(notAvailable);
-
+				     var openAccessQuery = function () {
+					 $.ajax({
+					     cache: true,
+					     dataType: 'json',
+					     url: ('https://restful.lib.uchicago.edu/cgi-bin/openaccess?code=6685&function=openaccess&openurl=' + openurl + '&callback=?'),
+					     success: function (data) {
+						 isAvailable();
+						 self.find('.e-links').append(openAccessHTML(data['url'],
+											     data['display'],
+											     data['displaylink']));
+					     },
+					     error: function (data) {
+						 notAvailable();
 							}
+					 });
+				     }
 
-							$('a.holdingslink').click(function (e) {
-								var holdingslink = $(this);
-								var holdingstext = holdingslink.text().replace(/^\s+|\s+$/g, '');
-								var f = get_sfx_form(holdingstext);
-								if ($(f).length > 0) {
-									e.preventDefault();
-									$(f).attr('target', '_self');
-									$(f).submit();
+				     idresolveExpansion(openAccessQuery);
+
 								}
-							});
+			     }
 						}
 					});
 				}
@@ -3000,7 +3017,6 @@
 				$(document).ready(function () {
 					var params = parse_query_string($('#sfx_openurl').text().trim().replace(/^[^?]*\?/, ''));
 
-					/* var url = 'https://sfx.lib.uchicago.edu/sfx_test/cgi/public/feedback.cgi?em=askeresources%40uchicago.libanswers.com';*/
 					/* change to this when in production*/
 					var url = 'https://sfx.lib.uchicago.edu/sfx_local/cgi/public/feedback.cgi?em=askeresources%40uchicago.libanswers.com';
 
